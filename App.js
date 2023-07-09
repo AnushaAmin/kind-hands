@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Button, View, Text, StyleSheet, Image, TouchableOpacity, AsyncStorage} from 'react-native';
-import { TextInput } from 'react-native-paper';
-
+import RegistrationForm from './src/screens/RegistrationForm';
 
 function App() {
   return (
-    <View>
-    
-    </View>
+      <RegistrationForm/>
+  
   );
 }
 const styles = StyleSheet.create({
