@@ -37,41 +37,51 @@ const RegistrationForm = () => {
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
 
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={(text) => setName(text)}
-            placeholder="Enter Full Name"
-            left={<TextInput.Icon name="user" />} />
+          <View style={styles.inputContainer}>
+            <Icon name="user" size={20} />
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={(text) => setName(text)}
+              placeholder="Enter Full Name"
+            />
+          </View>
 
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            keyboardType="email-address"
-            placeholder="Enter Email"
-            left={<TextInput.Icon name="envelope" />}/>
+          <View style={styles.inputContainer}>
+            <Icon name="envelope" size={18} />
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              keyboardType="email-address"
+              placeholder="Enter Email"
+            />
+          </View>
 
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry
-            placeholder="Enter Password"
-            left={<Icon name="lock"/>}/>
-
+          <View style={styles.inputContainer}>
+            <Icon name="lock" size={20}  />
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              secureTextEntry
+              placeholder="Enter Password"
+            />
+          </View>
           <View style={styles.optionContainer}>
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}>
+              onPress={() => handleOptionChange('patient')}
+            >
               <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
               <Text>Patient</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')} >
-              <Icon  name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
+              onPress={() => handleOptionChange('specialist')}
+            >
+              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
               <Text>Specialist</Text>
             </TouchableOpacity>
           </View>
@@ -99,10 +109,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   innerFormContainer: {
-    width: '90%',
+    width: '95%',
     paddingVertical: 20,
     paddingHorizontal: 20,
     backgroundColor: '#FFFF',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
   },
   registerButton: {
     marginTop: 20,
@@ -110,8 +125,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    marginBottom: 10,
-    width: '100%',
+    flex: 1,
+    height: 40,
+    marginLeft: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
   },
   optionContainer: {
     flexDirection: 'row',
@@ -133,8 +151,8 @@ const styles = StyleSheet.create({
   selectedOption: {
     backgroundColor: '#907FA4',
   },
-  icon : {
-   marginRight: 10
+  icon: {
+    marginRight: 10,
   },
 });
 
