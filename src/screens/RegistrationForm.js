@@ -61,7 +61,6 @@ const RegistrationForm = () => {
             left={<Icon name="lock"/>}/>
 
           <View style={styles.optionContainer}>
-
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
               onPress={() => handleOptionChange('patient')}>
@@ -75,13 +74,10 @@ const RegistrationForm = () => {
               <Icon  name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
               <Text>Specialist</Text>
             </TouchableOpacity>
-
           </View>
-
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>
-
         </View>
       </View>
     </SafeAreaView>
@@ -120,7 +116,6 @@ const styles = StyleSheet.create({
   optionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
     marginBottom: 16,
     width: '100%',
   },
