@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const RegistrationForm = () => {
   const [name, setName] = useState('');
@@ -28,49 +29,59 @@ const RegistrationForm = () => {
   };
 
   const handleOptionChange = (option) => {
-    setSelectedOption(option);
+    setSelectOption(option);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
+
           <TextInput
             style={styles.input}
             value={name}
             onChangeText={(text) => setName(text)}
             placeholder="Enter Full Name"
-          />
+            left={<TextInput.Icon name="user" />} />
+
           <TextInput
             style={styles.input}
             value={email}
             onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
             placeholder="Enter Email"
-          />
+            left={<TextInput.Icon name="envelope" />}/>
+
           <TextInput
             style={styles.input}
             value={password}
             onChangeText={(text) => setPassword(text)}
             secureTextEntry
             placeholder="Enter Password"
-          />
+            left={<Icon name="lock"/>}/>
+
           <View style={styles.optionContainer}>
+
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
               onPress={() => handleOptionChange('patient')}>
+              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
               <Text>Patient</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}>
+              onPress={() => handleOptionChange('specialist')} >
+              <Icon  name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
               <Text>Specialist</Text>
             </TouchableOpacity>
+
           </View>
+
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>
+
         </View>
       </View>
     </SafeAreaView>
@@ -109,6 +120,7 @@ const styles = StyleSheet.create({
   optionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 16,
     width: '100%',
   },
@@ -121,9 +133,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
+    flexDirection: 'row',
   },
   selectedOption: {
     backgroundColor: '#907FA4',
+  },
+  icon : {
+   marginRight: 10
   },
 });
 
