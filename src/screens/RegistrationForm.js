@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, Touch
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,10 +32,15 @@ const RegistrationForm = () => {
     setSelectOption(option);
   };
 
+  const handleLoginButtonPress = () => {
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
+          
           <View style={styles.inputContainer}>
             <Icon name="user" size={20} />
             <TextInput
@@ -58,7 +63,7 @@ const RegistrationForm = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Icon name="lock" size={20}  />
+            <Icon name="lock" size={20} />
             <TextInput
               style={styles.input}
               value={password}
@@ -87,6 +92,9 @@ const RegistrationForm = () => {
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>
+          <View style={styles.loginButton}>
+            <Text >Already have an Account?<TouchableOpacity style={styles.loginButton} onPress={handleLoginButtonPress}> LOGIN   </TouchableOpacity> </Text>
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -123,6 +131,10 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },
+  loginButton: {
+    backgroundColor: '#FFFF',
+    alignItems: 'center',
+  },
   input: {
     flex: 1,
     height: 40,
@@ -152,6 +164,10 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
