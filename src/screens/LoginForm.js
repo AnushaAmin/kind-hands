@@ -3,24 +3,19 @@ import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, Touch
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-const RegistrationForm = ({ navigation }) => {
-  const [name, setName] = useState('');
+const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectOption, setSelectOption] = useState('');
 
-  const handleRegistration = () => {
-    if (name === '' || email === '' || password === '' || selectOption === '') {
+  const handleLogin = () => {
+    if ( email === '' || password === '') {
       Alert.alert('Error', 'Please fill in all fields');
     } else if (!isValidEmail(email)) {
       Alert.alert('Invalid Email', 'Please enter a valid email address');
     } else {
-      Alert.alert('Registered Successfully');
-      setName('');
+      Alert.alert('Login Successful');
       setEmail('');
       setPassword('');
-      setSelectOption('');
     }
   };
 
@@ -28,29 +23,13 @@ const RegistrationForm = ({ navigation }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
-  const handleOptionChange = (option) => {
-    setSelectOption(option);
+  const handleRegisterButtonPress = () => {
+    navigation.navigate('Register');
   };
-
-  const handleLoginButtonPress = () => {
-    navigation.navigate('Login');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
-
-          <View style={styles.inputContainer}>
-            <Icon name="user" size={20} />
-            <TextInput
-              style={styles.input}
-              value={name}
-              onChangeText={(text) => setName(text)}
-              placeholder="Enter Full Name"
-            />
-          </View>
 
           <View style={styles.inputContainer}>
             <Icon name="envelope" size={18} />
@@ -64,7 +43,7 @@ const RegistrationForm = ({ navigation }) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Icon name="lock" size={20} />
+            <Icon name="lock" size={24} />
             <TextInput
               style={styles.input}
               value={password}
@@ -73,30 +52,13 @@ const RegistrationForm = ({ navigation }) => {
               placeholder="Enter Password"
             />
           </View>
-          <View style={styles.optionContainer}>
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}
-            >
-              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
-              <Text>Patient</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}
-            >
-              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
-              <Text>Specialist</Text>
-            </TouchableOpacity>
-          </View>
-          <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
-            Register
+          <Button onPress={handleLogin} style={styles.loginButton} mode="contained">
+            Login
           </Button>
-          <View style={styles.loginButton}>
-          <TouchableOpacity style={styles.loginButton} onPress={handleLoginButtonPress}>
-            <Text >Already have an Account? LOGIN </Text>
-          </TouchableOpacity>
+          <View style={styles.registerButton}>
+          <TouchableOpacity style={styles.registerButton} onPress={handleRegisterButtonPress}>
+            <Text>Create an Account? REGISTER</Text> 
+          </TouchableOpacity> 
           </View>
         </View>
       </View>
@@ -120,7 +82,7 @@ const styles = StyleSheet.create({
   },
   innerFormContainer: {
     width: '95%',
-    paddingVertical: 20,
+    paddingVertical: 30,
     paddingHorizontal: 20,
     backgroundColor: '#FFFF',
   },
@@ -129,12 +91,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  registerButton: {
+   loginButton: {
     marginTop: 20,
     width: '100%',
     justifyContent: 'center',
   },
-  loginButton: {
+   registerButton: {
     backgroundColor: '#FFFF',
     alignItems: 'center',
   },
@@ -174,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegistrationForm;
+export default LoginForm;
