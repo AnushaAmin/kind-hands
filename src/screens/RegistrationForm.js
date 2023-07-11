@@ -36,7 +36,6 @@ const RegistrationForm = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
-
           <View style={styles.inputContainer}>
             <Icon name="user" size={20} />
             <TextInput
