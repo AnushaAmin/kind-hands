@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Platform, StyleSheet, StatusBar, Alert} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const LoginForm = ({ navigation }) => {
+const ProfileScreen = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [newpassword, setNewPassword] = useState('');
 
-  const handleLogin = () => {
-    if ( email === '' || password === '') {
+  const handleUpdateProfile = () => {
+    if (name === '' || email === '' || newpassword === '') {
       Alert.alert('Error', 'Please fill in all fields');
     } else if (!isValidEmail(email)) {
       Alert.alert('Invalid Email', 'Please enter a valid email address');
     } else {
-      navigation.navigate('Profile')
+      Alert.alert('Profile Updated Successfully');
+      setName('');
       setEmail('');
-      setPassword('');
+      setNewPassword('');
     }
   };
 
@@ -23,14 +25,21 @@ const LoginForm = ({ navigation }) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-  const handleRegisterButtonPress = () => {
-    navigation.navigate('Register');
-  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
 
+         <View style={styles.inputContainer}>
+            <Icon name="user" size={19} />
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={(text) => setName(text)}
+              placeholder="Full Name"
+            />
+          </View>
           <View style={styles.inputContainer}>
             <Icon name="envelope" size={18} />
             <TextInput
@@ -38,7 +47,7 @@ const LoginForm = ({ navigation }) => {
               value={email}
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
-              placeholder="Enter Email"
+              placeholder="Email"
             />
           </View>
 
@@ -46,20 +55,15 @@ const LoginForm = ({ navigation }) => {
             <Icon name="lock" size={24} />
             <TextInput
               style={styles.input}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
+              value={newpassword}
+              onChangeText={(text) => setNewPassword(text)}
               secureTextEntry
-              placeholder="Enter Password"
+              placeholder="Password"
             />
           </View>
-          <Button onPress={handleLogin} style={styles.loginButton} mode="contained">
-            Login
+          <Button onPress={handleUpdateProfile} style={styles.updateButton} mode="contained">
+            Update
           </Button>
-          <View style={styles.registerButton}>
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegisterButtonPress}>
-            <Text>Create an Account? REGISTER</Text> 
-          </TouchableOpacity> 
-          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -67,6 +71,13 @@ const LoginForm = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  input: {
+    flex: 1,
+    height: 40,
+    marginLeft: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -91,49 +102,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-   loginButton: {
+   updateButton: {
     marginTop: 20,
     width: '100%',
     justifyContent: 'center',
-  },
-   registerButton: {
-    backgroundColor: '#FFFF',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    marginLeft: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-  },
-  optionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    width: '100%',
-  },
-  optionButton: {
-    flex: 1,
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-    flexDirection: 'row',
-  },
-  selectedOption: {
-    backgroundColor: '#907FA4',
-  },
-  icon: {
-    marginRight: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+  },  
+
 });
 
-export default LoginForm;
+export default ProfileScreen;
