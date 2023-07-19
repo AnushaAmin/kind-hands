@@ -2,32 +2,30 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Firebase_Auth } from '../../config/firebaseConfig';
+import { createUserWithEmailAndPassword } from '@firebase/auth';
 
-
-const RegistrationForm = ({ navigation }) => {
+const RegistrationForm = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [selectOption, setSelectOption] = useState('');
+  const auth = Firebase_Auth; 
 
-  const handleRegistration = () => {
-    if (name === '' || email === '' || password === '' || selectOption === '') {
-      Alert.alert('Error', 'Please fill in all fields');
-    } else if (!isValidEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address');
-    } else {
-      Alert.alert('Registered Successfully');
+  const handleRegistration = async () => {
+    try{
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(response);
+      navigation.navigate("Profile")
       setName('');
       setEmail('');
       setPassword('');
       setSelectOption('');
-    }
-  };
-
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+    } catch (error){
+      console.log(error)
+      Alert.alert("Registration failed" + error.message);
+    } 
+  }
 
   const handleOptionChange = (option) => {
     setSelectOption(option);
@@ -94,7 +92,7 @@ const RegistrationForm = ({ navigation }) => {
             Register
           </Button>
           <View style={styles.loginButton}>
-          <TouchableOpacity style={styles.loginButton} onPress={handleLoginButtonPress}>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLoginButtonPress} >
             <Text >Already have an Account? LOGIN </Text>
           </TouchableOpacity>
           </View>
@@ -102,8 +100,8 @@ const RegistrationForm = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-};
 
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,

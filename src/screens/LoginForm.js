@@ -1,28 +1,27 @@
+import { async } from '@firebase/util';
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Firebase_Auth } from '../../config/firebaseConfig';
+import { signInWithEmailAndPassword } from '@firebase/auth';
 
 const LoginForm = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const auth = Firebase_Auth;
 
-  const handleLogin = () => {
-    if ( email === '' || password === '') {
-      Alert.alert('Error', 'Please fill in all fields');
-    } else if (!isValidEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address');
-    } else {
-      navigation.navigate('Profile')
+  const handleLogin = async () => {
+    try{
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      navigation.navigate("Profile")
       setEmail('');
       setPassword('');
-    }
-  };
-
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+    } catch (error){
+      console.log(error)
+      Alert.alert("Login failed" + error.message);
+    } 
+  }
   const handleRegisterButtonPress = () => {
     navigation.navigate('Register');
   };

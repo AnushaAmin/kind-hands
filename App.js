@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StatusBar, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,7 +6,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import LoginForm from './src/screens/LoginForm';
 import RegistrationForm from './src/screens/RegistrationForm';
 import SpecialistProfileScreen from './src/specialist/SpecialistProfileScreen';
+import SpecialistSettingScreen from './src/specialist/SpecialistSettingScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 
  const Stack = createNativeStackNavigator();
  const Tab = createMaterialTopTabNavigator();
@@ -20,7 +22,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
           if (route.name === 'SpecialistProfileScreen') {
             iconName = 'user';
             size = 15;
-          } else if (route.name === 'Settings') {
+          } else if (route.name === 'SpecialistSettingScreen') {
             iconName = 'cog';
             size = 15;
           }
@@ -32,14 +34,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
     >
       <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} /> 
+      <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} /> 
     </Tab.Navigator>
   );
 };
 
-const SettingsScreen = () => {
-
-} 
 const App = () => {
   return (
     <NavigationContainer>
