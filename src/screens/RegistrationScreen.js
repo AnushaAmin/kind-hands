@@ -1,34 +1,54 @@
-import { async } from '@firebase/util';
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Firebase_Auth } from '../../config/firebaseConfig';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+import { createUserWithEmailAndPassword } from '@firebase/auth';
 
-const LoginForm = ({ navigation }) => {
+const RegistrationScreen = ({navigation}) => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const auth = Firebase_Auth;
+  const [selectOption, setSelectOption] = useState('');
+  const auth = Firebase_Auth; 
 
-  const handleLogin = async () => {
+  const handleRegistration = async () => {
     try{
-      const response = await signInWithEmailAndPassword(auth, email, password);
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(response);
       navigation.navigate("Profile")
+      setName('');
       setEmail('');
       setPassword('');
+      setSelectOption('');
     } catch (error){
       console.log(error)
-      Alert.alert("Login failed" + error.message);
+      Alert.alert("Registration failed" + error.message);
     } 
   }
-  const handleRegisterButtonPress = () => {
-    navigation.navigate('Register');
+
+  const handleOptionChange = (option) => {
+    setSelectOption(option);
   };
+
+  const handleLoginButtonPress = () => {
+    navigation.navigate('Login');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
+
+          <View style={styles.inputContainer}>
+            <Icon name="user" size={20} />
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={(text) => setName(text)}
+              placeholder="Enter Full Name"
+            />
+          </View>
 
           <View style={styles.inputContainer}>
             <Icon name="envelope" size={18} />
@@ -42,7 +62,7 @@ const LoginForm = ({ navigation }) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Icon name="lock" size={24} />
+            <Icon name="lock" size={20} />
             <TextInput
               style={styles.input}
               value={password}
@@ -51,20 +71,37 @@ const LoginForm = ({ navigation }) => {
               placeholder="Enter Password"
             />
           </View>
-          <Button onPress={handleLogin} style={styles.loginButton} mode="contained">
-            Login
+          <View style={styles.optionContainer}>
+            <TouchableOpacity
+              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
+              onPress={() => handleOptionChange('patient')}
+            >
+              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
+              <Text>Patient</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
+              onPress={() => handleOptionChange('specialist')}
+            >
+              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
+              <Text>Specialist</Text>
+            </TouchableOpacity>
+          </View>
+          <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
+            Register
           </Button>
-          <View style={styles.registerButton}>
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegisterButtonPress}>
-            <Text>Create an Account? REGISTER</Text> 
-          </TouchableOpacity> 
+          <View style={styles.loginButton}>
+          <TouchableOpacity style={styles.loginButton} onPress={handleLoginButtonPress} >
+            <Text >Already have an Account? LOGIN </Text>
+          </TouchableOpacity>
           </View>
         </View>
       </View>
     </SafeAreaView>
   );
-};
 
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -81,7 +118,7 @@ const styles = StyleSheet.create({
   },
   innerFormContainer: {
     width: '95%',
-    paddingVertical: 30,
+    paddingVertical: 20,
     paddingHorizontal: 20,
     backgroundColor: '#FFFF',
   },
@@ -90,12 +127,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-   loginButton: {
+  registerButton: {
     marginTop: 20,
     width: '100%',
     justifyContent: 'center',
   },
-   registerButton: {
+  loginButton: {
     backgroundColor: '#FFFF',
     alignItems: 'center',
   },
@@ -135,4 +172,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginForm;
+export default RegistrationScreen;
