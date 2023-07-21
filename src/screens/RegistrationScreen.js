@@ -3,6 +3,9 @@ import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, Touch
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import app from '../../config/firebaseConfig';
+
+const auth = getAuth(app);
 
 const RegistrationScreen = ({navigation}) => {
   const [name, setName] = useState('');
