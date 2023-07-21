@@ -2,8 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { getAuth, signOut } from "firebase/auth";
+import app from '../../config/firebaseConfig';
 
-const auth = getAuth();
+const auth = getAuth(app);
 
 const SettingsScreen = () => {
   return (
