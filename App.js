@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import AuthStack from './src/navigation/AuthStack';
 import SpecialistStack from './src/navigation/SpecialistStack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useAuth } from './src/hooks/useAuth';
 
 
- const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const [user, setUser] = useState(false);
+  const {user} = useAuth();
 
   return (
        user ? <SpecialistStack /> : <AuthStack />

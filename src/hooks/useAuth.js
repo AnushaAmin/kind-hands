@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged} from 'firebase/auth';
 
 const auth = getAuth();
 
@@ -9,9 +9,9 @@ export function useAuth() {
     useEffect(() => {
         const unsubscribeFromAuthStatusChanged = onAuthStateChanged(auth, (user) => {
             if (user) {
-                setUser(user);
+                setUser(user); //user signed in
             } else {
-                setUser(undefined);
+                setUser(undefined); //user signout
             }
         });
 

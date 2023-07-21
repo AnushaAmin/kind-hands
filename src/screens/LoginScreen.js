@@ -1,22 +1,21 @@
-import { async } from '@firebase/util';
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Firebase_Auth } from '../../config/firebaseConfig';
-import { signInWithEmailAndPassword } from '@firebase/auth';
+import {getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+
+const auth = getAuth();
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const auth = Firebase_Auth;
+
 
   const handleLogin = async () => {
     try{
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate("Profile")
-      setEmail('');
-      setPassword('');
+     await signInWithEmailAndPassword(auth, email, password);
+     setEmail('');
+     setPassword('');
     } catch (error){
       console.log(error)
       Alert.alert("Login failed" + error.message);

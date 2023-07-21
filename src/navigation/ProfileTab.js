@@ -1,5 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
+import {SpecialistSettingScreen} from '../specialist/SpecialistSettingScreen'
+import {SpecialistProfileScreen} from '../specialist/SpecialistProfileScreen';
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileTab = () => {
@@ -23,7 +24,7 @@ const ProfileTab = () => {
   
       >
         <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} />
-        <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} /> 
+        <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} />
       </Tab.Navigator>
     );
   };

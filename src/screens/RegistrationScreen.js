@@ -2,20 +2,17 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Firebase_Auth } from '../../config/firebaseConfig';
-import { createUserWithEmailAndPassword } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
 
 const RegistrationScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectOption, setSelectOption] = useState('');
-  const auth = Firebase_Auth; 
+  const [selectOption, setSelectOption] = useState(''); 
 
   const handleRegistration = async () => {
     try{
-      const response = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(response);
+     await createUserWithEmailAndPassword(auth, email, password);
       navigation.navigate("Profile")
       setName('');
       setEmail('');
