@@ -3,8 +3,9 @@ import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, Touch
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+import app from '../../config/firebaseConfig';
 
-const auth = getAuth();
+const auth = getAuth(app);
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

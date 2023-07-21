@@ -1,6 +1,8 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import {SpecialistSettingScreen} from '../specialist/SpecialistSettingScreen'
-import {SpecialistProfileScreen} from '../specialist/SpecialistProfileScreen';
+import SpecialistProfileScreen from '../specialist/SpecialistProfileScreen';
+import SpecialistSettingScreen from '../specialist/SpecialistSettingScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileTab = () => {

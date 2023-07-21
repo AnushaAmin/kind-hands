@@ -7,7 +7,7 @@ import { useAuth } from './src/hooks/useAuth';
 
 const App = () => {
   const {user} = useAuth();
-
+  
   return (
        user ? <SpecialistStack /> : <AuthStack />
   );
