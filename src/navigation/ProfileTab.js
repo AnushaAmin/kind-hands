@@ -1,3 +1,4 @@
+import {Platform, StatusBar} from 'react-native';
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import SpecialistProfileScreen from '../specialist/SpecialistProfileScreen';
 import SpecialistSettingScreen from '../specialist/SpecialistSettingScreen';

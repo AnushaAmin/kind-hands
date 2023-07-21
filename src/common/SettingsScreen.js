@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
+import { getAuth, signOut } from "firebase/auth";
+
+const auth = getAuth();
 
 const SettingsScreen = () => {
   return (
     <View style={styles.container}>
-      <Button style={styles.button} mode="contained">Logout</Button>
+      <Button style={styles.button} mode="contained" onPress={() => signOut(auth)}>Logout</Button>
     </View>
   );
 };
