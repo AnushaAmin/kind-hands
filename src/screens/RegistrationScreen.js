@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth';
+import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
 import app from '../../config/firebaseConfig';
+import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 const auth = getAuth(app);
+
 
 const RegistrationScreen = ({navigation}) => {
   const [name, setName] = useState('');
@@ -14,9 +16,20 @@ const RegistrationScreen = ({navigation}) => {
   const [selectOption, setSelectOption] = useState(''); 
 
   const handleRegistration = async () => {
+    if (!selectOption) {
+      Alert.alert('Please select an option (Patient or Specialist)');
+      return;
+    }
     try{
-     await createUserWithEmailAndPassword(auth, email, password);
-      navigation.navigate("Profile")
+      await createUserWithEmailAndPassword(auth, email, password, selectOption);
+      const firestore = getFirestore(app);
+      const userRef = collection(firestore, 'users');
+      await addDoc(userRef, {
+        name,
+        email,
+        userType: selectOption,
+      });
+
       setName('');
       setEmail('');
       setPassword('');
@@ -26,10 +39,10 @@ const RegistrationScreen = ({navigation}) => {
       Alert.alert("Registration failed" + error.message);
     } 
   }
-
   const handleOptionChange = (option) => {
     setSelectOption(option);
   };
+
 
   const handleLoginButtonPress = () => {
     navigation.navigate('Login');
