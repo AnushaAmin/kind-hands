@@ -15,13 +15,14 @@ const RegistrationScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [selectOption, setSelectOption] = useState(''); 
 
+    const isValidEmail = (email) => {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+         };
+
   const handleRegistration = async () => {
-    if (!selectOption) {
-      Alert.alert('Please select an option (Patient or Specialist)');
-      return;
-    }
     try{
-      await createUserWithEmailAndPassword(auth, email, password, selectOption);
+      await createUserWithEmailAndPassword(auth, email, password);
       const firestore = getFirestore(app);
       const userRef = collection(firestore, 'users');
       await addDoc(userRef, {
@@ -29,7 +30,11 @@ const RegistrationScreen = ({navigation}) => {
         email,
         userType: selectOption,
       });
-
+      if (name === '' || email === '' || password === '' || selectOption === '') {
+          Alert.alert('Error', 'Please fill in all fields');
+      } else if (!isValidEmail(email)) {
+          Alert.alert('Invalid Email', 'Please enter a valid email address');
+        } 
       setName('');
       setEmail('');
       setPassword('');

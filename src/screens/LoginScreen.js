@@ -11,10 +11,19 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleLogin = async () => {
     try{
      await signInWithEmailAndPassword(auth, email, password);
+     if (email === '' || password === '') {
+          Alert.alert('Error', 'Please fill in all fields');
+     } else if (!isValidEmail(email)) {
+          Alert.alert('Invalid Email', 'Please enter a valid email address');
+        } 
      setEmail('');
      setPassword('');
     } catch (error){
