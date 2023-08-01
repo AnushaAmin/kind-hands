@@ -17,20 +17,20 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const handleLogin = async () => {
+    if (email === '' || password === '') {
+      Alert.alert('Error', 'Please fill in all fields');
+ } else if (!isValidEmail(email)) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address');
+    } else {
     try{
      await signInWithEmailAndPassword(auth, email, password);
-     if (email === '' || password === '') {
-          Alert.alert('Error', 'Please fill in all fields');
-     } else if (!isValidEmail(email)) {
-          Alert.alert('Invalid Email', 'Please enter a valid email address');
-        } 
      setEmail('');
      setPassword('');
     } catch (error){
       console.log(error)
       Alert.alert("Login failed" + error.message);
     } 
-  }
+  } }
   const handleRegisterButtonPress = () => {
     navigation.navigate('Register');
   };
