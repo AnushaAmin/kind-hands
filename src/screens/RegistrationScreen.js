@@ -20,13 +20,20 @@ const RegistrationScreen = ({navigation}) => {
           return emailRegex.test(email);
          };
 
-  const handleRegistration = async () => {
-    if (name === '' || email === '' || password === '' || selectOption === '') {
-      Alert.alert('Error', 'Please fill in all fields');
-  } else if (!isValidEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address');
-    } else {
-    try{
+    const validateForm = (name, email, password, selectOption) => {
+      if (name === '' || email === '' || password === '' || selectOption === '') {
+       Alert.alert('Error', 'Please fill in all fields');
+       return false;
+  }   else if (!isValidEmail(email)) {
+       Alert.alert('Invalid Email', 'Please enter a valid email address');
+       return false;
+  }
+    return true;
+};
+
+const handleRegistration = async () => {
+  if (validateForm(name, email, password, selectOption)) {
+    try {
       await createUserWithEmailAndPassword(auth, email, password);
       const firestore = getFirestore(app);
       const userRef = collection(firestore, 'users');
@@ -39,11 +46,13 @@ const RegistrationScreen = ({navigation}) => {
       setEmail('');
       setPassword('');
       setSelectOption('');
-    } catch (error){
-      console.log(error)
-      Alert.alert("Registration failed" + error.message);
-    } 
-  } }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Registration failed', error.message);
+    }
+  }
+};
+
   const handleOptionChange = (option) => {
     setSelectOption(option);
   };
