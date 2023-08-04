@@ -1,29 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Platform, StyleSheet, StatusBar, Alert} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {auth, db} from '../../config/firebaseConfig';
+import {getDoc, doc } from 'firebase/firestore';
+
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [newpassword, setNewPassword] = useState('');
+  const [userType, setUserType] = useState('');
 
-  const handleUpdateProfile = () => {
-    if (name === '' || email === '' || newpassword === '') {
+
+
+  useEffect(() => {
+    const ReadData = async () => {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      
+      if (docSnap.exists()) {
+      setName(docSnap.data().name);
+      setEmail(docSnap.data().email);
+      setUserType(docSnap.data().userType);
+      }
+    }
+    ReadData();
+  }, [])
+
+  const handleUpdateProfile = async() => {
+    if (name === '' || email === '' || userType === '') {
       Alert.alert('Error', 'Please fill in all fields');
     } else if (!isValidEmail(email)) {
       Alert.alert('Invalid Email', 'Please enter a valid email address');
     } else {
+  
       Alert.alert('Profile Updated Successfully');
       setName('');
       setEmail('');
-      setNewPassword('');
+      setUserType('');
     }
-  };
+  
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  };
+  const handleOptionChange = (option) => {
+    setSelectOption(option);
   };
 
   return (
@@ -35,7 +58,7 @@ const ProfileScreen = () => {
             <Icon name="user" size={19} />
             <TextInput
               style={styles.input}
-              value={email}
+              value={name}
               onChangeText={(text) => setName(text)}
               placeholder="Full Name"
             />
@@ -51,7 +74,7 @@ const ProfileScreen = () => {
             />
           </View>
 
-          <View style={styles.inputContainer}>
+          {/* <View style={styles.inputContainer}>
             <Icon name="lock" size={24} />
             <TextInput
               style={styles.input}
@@ -60,7 +83,24 @@ const ProfileScreen = () => {
               secureTextEntry
               placeholder="Password"
             />
-          </View>
+          </View> */}
+          {/* <View style={styles.optionContainer}>
+            <TouchableOpacity
+              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
+              onPress={() => handleOptionChange('patient')}
+            >
+              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
+              <Text>Patient</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
+              onPress={() => handleOptionChange('specialist')}
+            >
+              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
+              <Text>Specialist</Text>
+            </TouchableOpacity>
+          </View> */}
           <Button onPress={handleUpdateProfile} style={styles.updateButton} mode="contained">
             Update
           </Button>
@@ -68,8 +108,8 @@ const ProfileScreen = () => {
       </View>
     </SafeAreaView>
   );
-};
 
+}; }
 const styles = StyleSheet.create({
   input: {
     flex: 1,
@@ -107,6 +147,29 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },  
+  optionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    width: '100%',
+  },
+  optionButton: {
+    flex: 1,
+    height: 45,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    flexDirection: 'row',
+  },
+  selectedOption: {
+    backgroundColor: '#907FA4',
+  },
+  icon: {
+    marginRight: 10,
+  },
 
 });
 
