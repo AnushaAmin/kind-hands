@@ -36,14 +36,12 @@ const ProfileScreen = () => {
 
       await updateDoc(docRef, {
         name: name,
-        email: email,
-        userType: selectOption
+    
       })
-      .then(() => {
       Alert.alert('Profile Updated Successfully');
-    })
+    }
      
-}
+
   const handleOptionChange = (option) => {
     setSelectOption(option);
   };
@@ -77,7 +75,7 @@ const ProfileScreen = () => {
           <View style={styles.optionContainer}>
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}
+              onPress={() => handleOptionChange('patient')}  disabled={true}
             >
               <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
               <Text>Patient</Text>
@@ -85,7 +83,7 @@ const ProfileScreen = () => {
 
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}
+              onPress={() => handleOptionChange('specialist')}  disabled={true}
             >
               <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
               <Text>Specialist</Text>

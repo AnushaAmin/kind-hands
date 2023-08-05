@@ -42,13 +42,10 @@ const handleRegistration = async () => {
         email: email,
         userType: selectOption
       })
-  
-      .then(() => {
       setName('');
       setEmail('');
       setPassword('');
       setSelectOption('');
-    })
     } catch (error) {
       console.log(error);
       Alert.alert('Registration failed', error.message);
