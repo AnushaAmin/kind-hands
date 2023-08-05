@@ -4,7 +4,8 @@ import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
 import app from '../../config/firebaseConfig';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
+import {db} from '../../config/firebaseConfig';
 
 const auth = getAuth(app);
 
@@ -36,21 +37,25 @@ const handleRegistration = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       const firestore = getFirestore(app);
-      const userRef = collection(firestore, 'users');
-      await addDoc(userRef, {
-        name,
-        email,
-        userType: selectOption,
-      });
+      const docRef = await setDoc(doc(db, "users", auth.currentUser.uid), {
+        name: name,
+        email: email,
+        userType: selectOption
+      })
+  
+      .then(() => {
       setName('');
       setEmail('');
       setPassword('');
       setSelectOption('');
+    })
     } catch (error) {
       console.log(error);
       Alert.alert('Registration failed', error.message);
     }
+  
   }
+  
 };
 
   const handleOptionChange = (option) => {

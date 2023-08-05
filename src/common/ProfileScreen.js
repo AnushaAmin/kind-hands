@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Platform, StyleSheet, StatusBar, Alert} from 'react-native';
+import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {auth, db} from '../../config/firebaseConfig';
-import {getDoc, doc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [userType, setUserType] = useState('');
+  const [selectOption, setSelectOption] = useState('');
 
-
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   useEffect(() => {
     const ReadData = async () => {
@@ -21,30 +24,26 @@ const ProfileScreen = () => {
       if (docSnap.exists()) {
       setName(docSnap.data().name);
       setEmail(docSnap.data().email);
-      setUserType(docSnap.data().userType);
+      setSelectOption(docSnap.data().userType);
       }
     }
     ReadData();
   }, [])
 
-  const handleUpdateProfile = async() => {
-    if (name === '' || email === '' || userType === '') {
-      Alert.alert('Error', 'Please fill in all fields');
-    } else if (!isValidEmail(email)) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address');
-    } else {
-  
-      Alert.alert('Profile Updated Successfully');
-      setName('');
-      setEmail('');
-      setUserType('');
-    }
-  
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const handleUpdateProfile = async() => {
+      const docRef = doc(db, "users", auth.currentUser.uid);
+
+      await updateDoc(docRef, {
+        name: name,
+        email: email,
+        userType: selectOption
+      })
+      .then(() => {
+      Alert.alert('Profile Updated Successfully');
+    })
+     
+}
   const handleOptionChange = (option) => {
     setSelectOption(option);
   };
@@ -71,20 +70,11 @@ const ProfileScreen = () => {
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
               placeholder="Email"
+              editable={false}
             />
           </View>
 
-          {/* <View style={styles.inputContainer}>
-            <Icon name="lock" size={24} />
-            <TextInput
-              style={styles.input}
-              value={newpassword}
-              onChangeText={(text) => setNewPassword(text)}
-              secureTextEntry
-              placeholder="Password"
-            />
-          </View> */}
-          {/* <View style={styles.optionContainer}>
+          <View style={styles.optionContainer}>
             <TouchableOpacity
               style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
               onPress={() => handleOptionChange('patient')}
@@ -100,7 +90,7 @@ const ProfileScreen = () => {
               <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
               <Text>Specialist</Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
           <Button onPress={handleUpdateProfile} style={styles.updateButton} mode="contained">
             Update
           </Button>
@@ -109,7 +99,7 @@ const ProfileScreen = () => {
     </SafeAreaView>
   );
 
-}; }
+};
 const styles = StyleSheet.create({
   input: {
     flex: 1,
