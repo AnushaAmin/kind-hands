@@ -9,6 +9,7 @@ const App = () => {
   
   return (
        user ? <SpecialistStack /> : <AuthStack />
+       
   );
 };
 
