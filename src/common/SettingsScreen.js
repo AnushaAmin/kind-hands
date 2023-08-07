@@ -9,16 +9,16 @@ import { useNavigation } from '@react-navigation/native';
 const auth = getAuth(app);
 
 const SettingsScreen = () => {
-  function mynavigator () {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-     <Button style={styles.button} mode="contained" onPress={() => navigation.goBack() }>Services</Button> 
+     <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('SpecialistServicesScreen') }>Services</Button> 
      <Button style={styles.button} mode="contained" onPress={() => signOut(auth)}>Logout</Button>
    </View>
   ); 
-};
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
