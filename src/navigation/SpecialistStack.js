@@ -9,9 +9,8 @@ const SpecialistStack = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="SpecialistServicesScreen" component={SpecialistServicesScreen} />
                 <Stack.Screen name="Profile" component={ProfileTab} options={{ headerShown: false }} /> 
-               
+                <Stack.Screen name="SpecialistServicesScreen" component={SpecialistServicesScreen} />
             </Stack.Navigator>
         </NavigationContainer>   
     );
