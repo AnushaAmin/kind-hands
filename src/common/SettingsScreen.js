@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text} from 'react-native';
 import { Button } from 'react-native-paper';
 import { getAuth, signOut } from "firebase/auth";
 import app from '../../config/firebaseConfig';
@@ -10,10 +10,20 @@ const auth = getAuth(app);
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
+  const data = [    
+    { id: '1', name: 'Services' },  ];  
+    const renderItem = ({ item }) => (     
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('SpecialistServicesScreen')}   >        
+      <Text>{item.name}</Text>    
+    </TouchableOpacity> 
+    );
 
   return (
     <View style={styles.container}>
-     <Button style={styles.button} mode="contained" onPress={() => navigation.navigate('SpecialistServicesScreen') }>Services</Button> 
+      <FlatList
+       data={data} 
+       renderItem={renderItem} 
+       keyExtractor={item => item.id} />   
      <Button style={styles.button} mode="contained" onPress={() => signOut(auth)}>Logout</Button>
    </View>
   ); 
