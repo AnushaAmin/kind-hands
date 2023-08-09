@@ -1,18 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { collection, query as firestoreQuery, getDocs } from 'firebase/firestore'; 
-import { db, auth } from '../../config/firebaseConfig';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import {
+  collection,
+  query as firestoreQuery,
+  getDocs,
+} from "firebase/firestore";
+import { db, auth } from "../../config/firebaseConfig";
 
 const SpecialistServicesScreen = () => {
   const navigation = useNavigation();
   const [services, setServices] = useState([]);
+  const isFocused = useIsFocused();
 
   const fetchServices = async () => {
     try {
-      const userServicesCollectionRef = collection(db, 'services', auth.currentUser.uid, 'all-services');
-      const q = firestoreQuery(userServicesCollectionRef); 
+      const userServicesCollectionRef = collection(
+        db,
+        "services",
+        auth.currentUser.uid,
+        "all-services"
+      );
+      const q = firestoreQuery(userServicesCollectionRef);
 
       const querySnapshot = await getDocs(q);
 
@@ -26,13 +42,15 @@ const SpecialistServicesScreen = () => {
 
       setServices(fetchedServices);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.error("Error fetching services:", error);
     }
   };
 
   useEffect(() => {
-    fetchServices();
-  }, []);
+    if (isFocused) {
+      fetchServices();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -42,16 +60,18 @@ const SpecialistServicesScreen = () => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.serviceItem}>
             <Text style={styles.serviceName}>{item.name}</Text>
-            <Text style={styles.serviceCategory}>Category: {item.category}</Text>
-            <Text style={styles.serviceDescription}>{item.description}</Text>
+            <Text style={styles.serviceCategory}>
+              Category: {item.category}
+            </Text>
           </TouchableOpacity>
         )}
       />
       <TouchableOpacity
         style={styles.addButton}
         onPress={() => {
-          navigation.navigate('CreateServiceScreen');
-        }}>
+          navigation.navigate("CreateServiceScreen");
+        }}
+      >
         <FontAwesome name="plus" size={25} color="white" />
       </TouchableOpacity>
     </View>
@@ -65,24 +85,24 @@ const styles = StyleSheet.create({
   serviceItem: {
     padding: 10,
     borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderColor: "gray",
   },
   serviceName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   serviceCategory: {
     fontSize: 16,
-    color: 'gray',
+    color: "gray",
   },
   serviceDescription: {
     fontSize: 14,
   },
   addButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     right: 20,
-    backgroundColor: '#9F91CC',
+    backgroundColor: "#9F91CC",
     borderRadius: 25,
     padding: 10,
   },
