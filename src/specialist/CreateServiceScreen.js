@@ -63,8 +63,8 @@ const CreateServiceScreen = () => {
         selectedValue={category}
         onValueChange={setCategory}
       >
-        {Categories.map((dog) => (
-          <Picker.Item key={dog} label={dog} value={dog} />
+        {Categories.map((items) => (
+          <Picker.Item key={items} label={items} value={items} />
         ))}
       </Picker>
       <TextInput
