@@ -31,7 +31,7 @@ const CreateServiceScreen = () => {
   };
 
   const handleSave = async () => {
-    if (requirementCheck(name, category)) {
+    if (requirementCheck()) {
       try {
         const userServicesCollectionRef = collection(
           db,
@@ -72,8 +72,8 @@ const CreateServiceScreen = () => {
         onValueChange={setCategory}
         itemStyle={styles.picker}
       >
-        {Categories.map((dog) => (
-          <Picker.Item key={dog} label={dog} value={dog} />
+        {Categories.map((items) => (
+          <Picker.Item key={items} label={items} value={items} />
         ))}
       </Picker>
 
