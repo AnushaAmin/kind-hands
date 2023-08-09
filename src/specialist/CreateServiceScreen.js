@@ -16,7 +16,7 @@ const CreateServiceScreen = () => {
 
   const navigation = useNavigation();
 
-  const requirementCheck = (name, category) => {
+  const requirementCheck = () => {
     if (name === '' || category === '') {
       Alert.alert('Error', 'Please fill in all fields');
       return false;
@@ -25,7 +25,7 @@ const CreateServiceScreen = () => {
   };
 
   const handleSave = async () => {
-    if (requirementCheck(name, category)) {
+    if (requirementCheck()) {
         try {
           const userServicesCollectionRef = collection(db, 'services', auth.currentUser.uid, "all-services");
       
