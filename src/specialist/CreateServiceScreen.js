@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Picker, Alert } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, StyleSheet, TextInput, Alert } from 'react-native';
+import { Button } from 'react-native-paper'; 
+import { Picker } from '@react-native-picker/picker'; 
 import { Categories } from '../common/Constants';
+import 'firebase/firestore';
+import { auth, db } from '../../config/firebaseConfig';
+import { useNavigation } from '@react-navigation/native';
+import { collection, addDoc } from 'firebase/firestore';
+
 
 const CreateServiceScreen = () => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
+
+  const navigation = useNavigation();
 
   const requirementCheck = (name, category) => {
     if (name === '' || category === '') {
@@ -16,12 +24,31 @@ const CreateServiceScreen = () => {
     return true;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (requirementCheck(name, category)) {
-      Alert.alert('Success', 'Service saved successfully!');
-    }
+        try {
+          const userServicesCollectionRef = collection(db, 'services', auth.currentUser.uid, "all-services");
+      
+          
+          const newServiceDocRef = await addDoc(userServicesCollectionRef, {
+            name: name,
+            category: category,
+            description: description,
+          });
+          navigation.navigate('SpecialistServicesScreen');
+          setName('');
+          setCategory('');
+          setDescription('');
+        } catch (error) {
+          console.error('Error saving service:', error);
+        }
+      } else {
+        console.error('User is not authenticated');
+      }
+    
   };
-
+  
+  
   return (
     <View style={styles.container}>
       <TextInput
@@ -48,10 +75,13 @@ const CreateServiceScreen = () => {
         maxLength={300}
         multiline
       />
-      <Button mode="contained" onPress={handleSave}>Save</Button>
+      <Button mode="contained" onPress={handleSave}>
+        Save
+      </Button>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
