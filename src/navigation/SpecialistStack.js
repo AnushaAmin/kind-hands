@@ -1,6 +1,7 @@
 import ProfileTab from "./ProfileTab";
 import SpecialistServicesScreen from "../specialist/SpecialistServicesScreen";
 import CreateServiceScreen from "../specialist/CreateServiceScreen";
+import EditServiceScreen from "../specialist/EditServiceScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -24,6 +25,11 @@ const SpecialistStack = () => {
           name="CreateServiceScreen"
           component={CreateServiceScreen}
           options={{ title: "Create" }}
+        />
+        <Stack.Screen
+          name="EditServiceScreen"
+          component={EditServiceScreen}
+          options={{ title: "Edit" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

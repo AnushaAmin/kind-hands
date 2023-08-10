@@ -58,7 +58,7 @@ const SpecialistServicesScreen = () => {
         data={services}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.serviceItem}>
+          <TouchableOpacity style={styles.serviceItem} onPress={()=>{navigation.navigate("EditServiceScreen", { serviceId: item.id });}}>
             <Text style={styles.serviceName}>{item.name}</Text>
             <Text style={styles.serviceCategory}>
               Category: {item.category}

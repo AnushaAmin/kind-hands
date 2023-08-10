@@ -17,7 +17,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 const CreateServiceScreen = () => {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Canula Insertion");
   const [description, setDescription] = useState("");
 
   const navigation = useNavigation();
