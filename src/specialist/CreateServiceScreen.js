@@ -22,7 +22,7 @@ const CreateServiceScreen = () => {
 
   const navigation = useNavigation();
 
-  const requirementCheck = (name, category) => {
+  const requirementCheck = () => {
     if (name === "" || category === "") {
       Alert.alert("Error", "Please fill in all fields");
       return false;
@@ -52,9 +52,7 @@ const CreateServiceScreen = () => {
       } catch (error) {
         console.error("Error saving service:", error);
       }
-    } else {
-      console.error("User is not authenticated");
-    }
+    } 
   };
 
   return (
