@@ -1,18 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import {View, StyleSheet, FlatList, Text, TouchableOpacity} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import {
-  collection,
-  query as firestoreQuery,
-  getDocs,
-} from "firebase/firestore";
+import {collection, query as firestoreQuery, getDocs} from "firebase/firestore";
 import { db, auth } from "../../config/firebaseConfig";
 
 const SpecialistServicesScreen = () => {

@@ -11,10 +11,6 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState('');
   const [selectOption, setSelectOption] = useState('');
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   useEffect(() => {
     const ReadData = async () => {
