@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Platform, StatusBar, Alert } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { View, StyleSheet, TextInput, Alert } from 'react-native';
+import { Button } from 'react-native-paper';
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import "firebase/firestore";
+import { Picker } from "@react-native-picker/picker";
+import { Categories } from "../common/Constants";
 
 const EditServiceScreen = ({ route, navigation }) => {
   const [name, setName] = useState('');
@@ -73,18 +75,24 @@ const EditServiceScreen = ({ route, navigation }) => {
         onChangeText={setName}
         placeholder="Name"
       />
-      <TextInput
-        style={styles.input}
-        value={category}
-        onChangeText={setCategory}
-        placeholder="Category"
-      />
+      <Picker
+        selectedValue={category}
+        onValueChange={setCategory}
+        itemStyle={styles.picker}
+      >
+        {Categories.map((items) => (
+          <Picker.Item key={items} label={items} value={items} />
+        ))}
+      </Picker>
       <TextInput
         style={styles.input}
         value={description}
         onChangeText={setDescription}
         placeholder="Description"
-        multiline
+        multiline 
+        onBlur={() => {
+          Keyboard.dismiss(); 
+        }}
       />
       <View style={styles.buttonContainer}>
         <Button onPress={handleUpdate} style={styles.updateButton} mode="contained">
@@ -101,13 +109,20 @@ const EditServiceScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    paddingHorizontal: '5%',
-    backgroundColor: '#fff',
+    padding: 20,
   },
   input: {
-    marginBottom: '5%'
+    marginBottom: 20,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "gray",
+  },
+  picker: {
+    backgroundColor: "darkgrey",
+    color: "black",
+    height: 100,
+    fontSize: 13,
+    marginBottom: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
