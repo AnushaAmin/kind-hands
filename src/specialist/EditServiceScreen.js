@@ -5,7 +5,7 @@ import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import "firebase/firestore";
 import { Picker } from "@react-native-picker/picker";
-import { Categories } from "../common/Constants";
+import { Categories } from "../../config/Constants";
 
 const EditServiceScreen = ({ route, navigation }) => {
   const [name, setName] = useState('');

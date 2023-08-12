@@ -1,4 +1,4 @@
-import ProfileTab from "./ProfileTab";
+import SpecialistTabs from '../navigation/SpecialistTabs';
 import SpecialistServicesScreen from "../specialist/SpecialistServicesScreen";
 import CreateServiceScreen from "../specialist/CreateServiceScreen";
 import EditServiceScreen from "../specialist/EditServiceScreen";
@@ -13,7 +13,7 @@ const SpecialistStack = () => {
       <Stack.Navigator>
         <Stack.Screen
           name="Profile"
-          component={ProfileTab}
+          component={SpecialistTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfileScreen from '../common/ProfileScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import { View, StyleSheet } from 'react-native';
 
 const SpecialistProfileScreen = () => {

@@ -1,15 +1,8 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Alert,
-  ScrollView,
-  Keyboard,
-} from "react-native";
+import {View, StyleSheet, TextInput, Alert, ScrollView, Keyboard} from "react-native";
 import { Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
-import { Categories } from "../common/Constants";
+import { Categories } from "../../config/Constants";
 import "firebase/firestore";
 import { auth, db } from "../../config/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
@@ -52,7 +45,7 @@ const CreateServiceScreen = () => {
       } catch (error) {
         console.error("Error saving service:", error);
       }
-    } 
+    }
   };
 
   return (
