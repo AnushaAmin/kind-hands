@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"; 
 import { Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
 import { collectionGroup, getDocs, query } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
 
 const PatientHomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [services, setServices] = useState([]);
+
+  const navigation = useNavigation();
 
   const handleSearch = async () => {
     if (!selectedCategory) {
@@ -22,7 +25,15 @@ const PatientHomeScreen = () => {
 
       const servicesData = [];
       querySnapshot.forEach((doc) => {
-        servicesData.push(doc.data());
+        console.log(doc.id)
+        servicesData.push({
+          ...doc.data(),
+          id:doc.id,
+        });
+        console.log({
+          ...doc.data(),
+          id:doc.id,
+        })
       });
 
       const filteredServices = servicesData.filter(
@@ -30,13 +41,24 @@ const PatientHomeScreen = () => {
       );
 
       setServices(filteredServices);
+      
       if (filteredServices.length === 0) {
         alert("No service found for this category.");
       }
     } catch (error) {
       console.error("Error fetching services:", error);
     }
-  }
+  };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("ServiceDetailScreen", { service: item})} 
+      style={styles.serviceContainer}
+    >
+      <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
+      <Text>Category: {item.category}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
@@ -52,29 +74,32 @@ const PatientHomeScreen = () => {
       <Button onPress={handleSearch} style={styles.button}>
         <Text>Search</Text>
       </Button>
-      {services.map((service, index) => (
-        <View key={index} style={styles.serviceContainer}>
-          <Text style={{ fontWeight: "bold" }}>Name: {service.name}</Text>
-          <Text>Category: {service.category}</Text>
-          <Text>Description: {service.description}</Text>
-        </View>
-      ))}
+      <FlatList
+        data={services}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()} 
+        style={styles.contentContainerStyle}
+      />
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
   },
   serviceContainer: {
-    marginLeft: 20, 
-    marginTop: 15, 
+    marginLeft: 20,
+    marginTop: 15,
   },
   button: {
     marginTop: 10,
-    justifyContent: 'center',
-  }
+    justifyContent: "center",
+  },
+  contentContainerStyle: {
+    paddingBottom: 20
+  }, 
 });
 
 export default PatientHomeScreen;
