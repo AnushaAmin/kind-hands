@@ -33,6 +33,7 @@ const CreateServiceScreen = () => {
           "all-services"
         );
         const newServiceDocRef = await addDoc(userServicesCollectionRef, {
+          user_id: auth.currentUser.uid,
           name: name,
           category: category,
           description: description,

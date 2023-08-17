@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { db } from "../../config/firebaseConfig";
-import { doc, getDocs, getDoc, query, collectionGroup } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const PatientServiceDetailScreen = ({ route }) => {
   const { service } = route.params;
@@ -10,10 +10,9 @@ const PatientServiceDetailScreen = ({ route }) => {
   useEffect(() => {
     const fetchCreator = async () => {
       try {
-        const creatorDocRef = doc(db, "services", "ruLk32xRmDZPIyhe8TCX5KD81Ho1"); 
+        const creatorDocRef = doc(db, "users", service.user_id);
         const creatorDocSnapshot = await getDoc(creatorDocRef);
-        
-        console.log(creatorDocSnapshot.ref.parent)
+
         if (creatorDocSnapshot.exists()) {
           setCreator(creatorDocSnapshot.data());
         } else {
@@ -41,9 +40,9 @@ const PatientServiceDetailScreen = ({ route }) => {
         <Text style={styles.serviceDescription}>{service.description}</Text>
         {creator && (
           <View style={styles.creatorContainer}>
-            <Text style={styles.creatorTitle}>Author/Creator:</Text>
+            <Text style={styles.creatorTitle}>Created By:</Text>
             <Text style={styles.creatorName}>{creator.name}</Text>
-            <Text style={styles.creatorSubtitle}>Email Address:</Text>
+            <Text style={styles.creatorTitle}>Email:</Text>
             <Text style={styles.creatorEmail}>{creator.email}</Text>
           </View>
         )}
@@ -55,8 +54,8 @@ const PatientServiceDetailScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#F7F7F7",
     padding: 20,
-    backgroundColor: "#fff",
   },
   serviceHeader: {
     marginBottom: 20,
@@ -64,16 +63,18 @@ const styles = StyleSheet.create({
   serviceName: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#333",
   },
   serviceCategory: {
     fontSize: 16,
     color: "#666",
+    marginBottom: 10,
   },
-  serviceContent: {
-    marginBottom: 20,
-  },
+  serviceContent: {},
   serviceDescription: {
     fontSize: 16,
+    lineHeight: 24,
+    color: "#444",
   },
   creatorContainer: {
     marginTop: 20,
@@ -85,13 +86,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
+    color: "#333",
   },
   creatorName: {
     fontSize: 16,
-  },
-  creatorSubtitle: {
-    fontSize: 16,
-    marginTop: 10,
+    marginBottom: 10,
+    color: "#555",
   },
   creatorEmail: {
     fontSize: 16,
