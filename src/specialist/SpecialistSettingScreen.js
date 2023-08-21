@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity, Text} from "react-native";
 import { Button } from "react-native-paper";
 import { getAuth, signOut } from "firebase/auth";
 import app from "../../config/firebaseConfig";
@@ -15,15 +9,24 @@ const auth = getAuth(app);
 
 const SpecialistSettingScreen = () => {
   const navigation = useNavigation();
-  const data = [{ id: "1", name: "Services" }];
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.item}
-      onPress={() => navigation.navigate("SpecialistServicesScreen")}
-    >
-      <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item.name}</Text>
-    </TouchableOpacity>
-  );
+  const data = [
+    { id: "1", name: "Services" },
+    { id: "2", name: "Verification" }];
+  
+    const renderItem = ({ item }) => (
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => {
+          if (item.id === "1") {
+            navigation.navigate("SpecialistServicesScreen");
+          } else if (item.id === "2") {
+            navigation.navigate("SpecialistVerificationScreen"); 
+          }
+        }}
+      >
+        <Text style={{ fontSize: 18, fontWeight: "bold" }}>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
   return (
     <View style={styles.container}>
