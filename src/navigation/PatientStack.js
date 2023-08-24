@@ -1,6 +1,5 @@
 import PatientTabs from "./PatientTabs";
 import PatientServiceDetailScreen from "../patient/PatientServiceDetailScreen";
-import PatientRegistrationScreen from "../patient/PatientRegistrationScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -21,12 +20,7 @@ const PatientStack = () => {
           component={PatientServiceDetailScreen}
           options={{ title: "Detail Screen" }}
         />
-        <Stack.Screen
-          name="PatientRegistrationScreen"
-          component={PatientRegistrationScreen}
-          options={{ headerShown: false }}
-        />
-        
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
