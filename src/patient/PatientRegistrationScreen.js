@@ -13,16 +13,17 @@ const auth = getAuth(app);
 const PatientRegistrationScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [selectOption, setSelectOption] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [address, setAddress] = useState('');
+  const [selectedGender, setSelectedGender] = useState(''); 
 
     const isValidEmail = (email) => {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(email);
          };
 
-    const validateForm = (name, email, password, selectOption) => {
-      if (name === '' || email === '' || password === '' || selectOption === '') {
+    const validateForm = (name, email, password, address, selectedGender) => {
+      if (name === '' || email === '' || password === '' || address === '' || selectedGender === '') {
        Alert.alert('Error', 'Please fill in all fields');
        return false;
   }   else if (!isValidEmail(email)) {
@@ -33,19 +34,20 @@ const PatientRegistrationScreen = ({navigation}) => {
 };
 
 const handleRegistration = async () => {
-  if (validateForm(name, email, password, selectOption)) {
+  if (validateForm(name, email, password)) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       const firestore = getFirestore(app);
       const docRef = await setDoc(doc(db, "users", auth.currentUser.uid), {
         name: name,
         email: email,
-        userType: selectOption
+        userType: "patient"
       })
       setName('');
       setEmail('');
       setPassword('');
-      setSelectOption('');
+      setAddress('');
+      setSelectedGender('');
     } catch (error) {
       console.log(error);
       Alert.alert('Registration failed', error.message);
@@ -54,11 +56,6 @@ const handleRegistration = async () => {
   }
   
 };
-
-  const handleOptionChange = (option) => {
-    setSelectOption(option);
-  };
-
 
   const handleLoginButtonPress = () => {
     navigation.navigate('Login');
@@ -100,23 +97,41 @@ const handleRegistration = async () => {
               placeholder="Enter Password"
             />
           </View>
-          <View style={styles.optionContainer}>
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}
-            >
-              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
-              <Text>Patient</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}
-            >
-              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
-              <Text>Specialist</Text>
-            </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <Icon name="map-marker" size={20} />
+            <TextInput
+              style={styles.input}
+              value={address}
+              onChangeText={(text) => setAddress(text)}
+              placeholder="Enter Your Address"
+            />
           </View>
+
+          <View style={styles.optionContainer}>
+          <TouchableOpacity
+            style={[
+              styles.optionButton,
+              selectedGender === 'male' && styles.selectedOption,
+            ]}
+            onPress={() => setSelectedGender('male')}
+          >
+            <Icon name="male" size={20} style={styles.icon} color={selectedGender === 'male' ? '#FFF' : 'black'} />
+            <Text>Male</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.optionButton,
+              selectedGender === 'female' && styles.selectedOption,
+            ]}
+            onPress={() => setSelectedGender('female')}
+          >
+            <Icon name="female" size={20} style={styles.icon} color={selectedGender === 'female' ? '#FFF' : 'black'} />
+            <Text>Female</Text>
+          </TouchableOpacity>
+        </View>
+
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>

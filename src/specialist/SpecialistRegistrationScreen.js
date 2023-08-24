@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { Button, TextInput, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
 import app from '../../config/firebaseConfig';
@@ -13,16 +13,21 @@ const auth = getAuth(app);
 const SpecialistRegistrationScreen = ({navigation}) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phoneNo, setPhoneNo] = useState('');
+  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [selectOption, setSelectOption] = useState(''); 
+  const [isEmployed, setIsEmployed] = useState(false); 
+  const [experience, setExperience] = useState(''); 
+  const [selectedGender, setSelectedGender] = useState(''); 
+
 
     const isValidEmail = (email) => {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(email);
          };
 
-    const validateForm = (name, email, password, selectOption) => {
-      if (name === '' || email === '' || password === '' || selectOption === '') {
+    const validateForm = (name, email, password, selectOption, phoneNo, address) => {
+      if (name === '' || email === '' || password === '' || phoneNo === '' || address === '') {
        Alert.alert('Error', 'Please fill in all fields');
        return false;
   }   else if (!isValidEmail(email)) {
@@ -33,19 +38,29 @@ const SpecialistRegistrationScreen = ({navigation}) => {
 };
 
 const handleRegistration = async () => {
-  if (validateForm(name, email, password, selectOption)) {
+  if (validateForm(name, email, password, phoneNo, address)) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       const firestore = getFirestore(app);
       const docRef = await setDoc(doc(db, "users", auth.currentUser.uid), {
         name: name,
         email: email,
-        userType: selectOption
+        phoneNumber: phoneNo,
+        address: address,
+        userType: "specialist",
+        employed: isEmployed,
+        experience: isEmployed ? experience : '',
+        gender: selectedGender,
       })
       setName('');
       setEmail('');
       setPassword('');
-      setSelectOption('');
+      setPhoneNo('');
+      setAddress('');
+      setIsEmployed();
+      setExperience('');
+      setSelectedGender('');
+      
     } catch (error) {
       console.log(error);
       Alert.alert('Registration failed', error.message);
@@ -54,11 +69,6 @@ const handleRegistration = async () => {
   }
   
 };
-
-  const handleOptionChange = (option) => {
-    setSelectOption(option);
-  };
-
 
   const handleLoginButtonPress = () => {
     navigation.navigate('Login');
@@ -100,23 +110,73 @@ const handleRegistration = async () => {
               placeholder="Enter Password"
             />
           </View>
-          <View style={styles.optionContainer}>
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}
-            >
-              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
-              <Text>Patient</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}
-            >
-              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
-              <Text>Specialist</Text>
-            </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <Icon name="phone" size={20} />
+            <TextInput
+              style={styles.input}
+              value={phoneNo}
+              onChangeText={(text) => setPhoneNo(text)}
+              keyboardType="phone-pad"
+              placeholder="Enter Phone Number"
+            />
           </View>
+
+          <View style={styles.inputContainer}>
+            <Icon name="map-marker" size={20} />
+            <TextInput
+              style={styles.input}
+              value={address}
+              onChangeText={(text) => setAddress(text)}
+              placeholder="Enter Your Address"
+            />
+          </View>
+          
+        <View style={styles.inputContainer}>
+          <Checkbox
+            status={isEmployed ? 'checked' : 'unchecked'}
+            onPress={() => setIsEmployed(!isEmployed)}
+          />
+          <Text>Currently Employed</Text>
+        </View>
+
+        {isEmployed && (
+          <View style={styles.inputContainer}>
+            <Icon name="star" size={18} />
+            <TextInput
+              style={styles.input}
+              value={experience}
+              onChangeText={(text) => setExperience(text)}
+              placeholder="Enter Experience"
+            />
+          </View>
+        )}
+
+
+        <View style={styles.optionContainer}>
+          <TouchableOpacity
+            style={[
+              styles.optionButton,
+              selectedGender === 'male' && styles.selectedOption,
+            ]}
+            onPress={() => setSelectedGender('male')}
+          >
+            <Icon name="male" size={20} style={styles.icon} color={selectedGender === 'male' ? '#FFF' : 'black'} />
+            <Text>Male</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.optionButton,
+              selectedGender === 'female' && styles.selectedOption,
+            ]}
+            onPress={() => setSelectedGender('female')}
+          >
+            <Icon name="female" size={20} style={styles.icon} color={selectedGender === 'female' ? '#FFF' : 'black'} />
+            <Text>Female</Text>
+          </TouchableOpacity>
+        </View>
+
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>
