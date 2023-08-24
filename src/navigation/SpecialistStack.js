@@ -3,6 +3,7 @@ import SpecialistServicesScreen from "../specialist/SpecialistServicesScreen";
 import CreateServiceScreen from "../specialist/CreateServiceScreen";
 import EditServiceScreen from "../specialist/EditServiceScreen";
 import SpecialistVerificationScreen from '../specialist/SpecialistVerificationScreen';
+import SpecialistRegistrationScreen from '../specialist/SpecialistRegistrationScreen';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -36,6 +37,11 @@ const SpecialistStack = () => {
           name="SpecialistVerificationScreen"
           component={SpecialistVerificationScreen}
           options={{ title: "Verification" }}
+        />
+        <Stack.Screen
+          name="SpecialistRegistrationScreen"
+          component={SpecialistRegistrationScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
