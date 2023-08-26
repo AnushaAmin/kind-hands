@@ -9,8 +9,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [selectOption, setSelectOption] = useState('');
-
+  const [address, setAddress] = useState('');
 
   useEffect(() => {
     const ReadData = async () => {
@@ -20,7 +19,7 @@ const ProfileScreen = () => {
       if (docSnap.exists()) {
       setName(docSnap.data().name);
       setEmail(docSnap.data().email);
-      setSelectOption(docSnap.data().userType);
+      setAddress(docSnap.data().address);
       }
     }
     ReadData();
@@ -37,11 +36,6 @@ const ProfileScreen = () => {
       Alert.alert('Profile Updated Successfully');
     }
      
-
-  const handleOptionChange = (option) => {
-    setSelectOption(option);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
@@ -67,24 +61,16 @@ const ProfileScreen = () => {
               editable={false}
             />
           </View>
-
-          <View style={styles.optionContainer}>
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'patient' && styles.selectedOption]}
-              onPress={() => handleOptionChange('patient')}  disabled={true}
-            >
-              <Icon name="user" size={20} style={styles.icon} color={selectOption === 'patient' ? '#FFF' : 'black'} />
-              <Text>Patient</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.optionButton, selectOption === 'specialist' && styles.selectedOption]}
-              onPress={() => handleOptionChange('specialist')}  disabled={true}
-            >
-              <Icon name="user-md" size={20} style={styles.icon} color={selectOption === 'specialist' ? '#FFF' : 'black'} />
-              <Text>Specialist</Text>
-            </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <Icon name="map-marker" size={20} />
+            <TextInput
+              style={styles.input}
+              value={address}
+              onChangeText={(text) => setAddress(text)}
+              placeholder="Enter Your Address"
+            />
           </View>
+
           <Button onPress={handleUpdateProfile} style={styles.updateButton} mode="contained">
             Update
           </Button>
