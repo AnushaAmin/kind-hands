@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Alert } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, StyleSheet, Alert, Keyboard } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
-import "firebase/firestore";
 import { Picker } from "@react-native-picker/picker";
 import { Categories } from "../../config/Constants";
 
@@ -12,13 +11,13 @@ const EditServiceScreen = ({ route, navigation }) => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
 
-  const { serviceId } = route.params; 
+  const { serviceId } = route.params;
 
   useEffect(() => {
     const ReadData = async () => {
       const userServicesDocRef = doc(db, "services", auth.currentUser.uid, "all-services", serviceId);
       const docSnap = await getDoc(userServicesDocRef);
-      
+
       if (docSnap.exists()) {
         setName(docSnap.data().name);
         setCategory(docSnap.data().category);
@@ -30,14 +29,14 @@ const EditServiceScreen = ({ route, navigation }) => {
 
   const handleUpdate = async () => {
     const userServicesDocRef = doc(db, "services", auth.currentUser.uid, "all-services", serviceId);
-  
+
     await updateDoc(userServicesDocRef, {
       name: name,
       category: category,
       description: description
     });
-  
-    navigation.goBack(); 
+
+    navigation.goBack();
   };
 
   const handleDelete = () => {
@@ -69,31 +68,45 @@ const EditServiceScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Name"
-      />
-      <Picker
-        selectedValue={category}
-        onValueChange={setCategory}
-        itemStyle={styles.picker}
-      >
-        {Categories.map((items) => (
-          <Picker.Item key={items} label={items} value={items} />
-        ))}
-      </Picker>
-      <TextInput
-        style={styles.input}
-        value={description}
-        onChangeText={setDescription}
-        placeholder="Description"
-        multiline 
-        onBlur={() => {
-          Keyboard.dismiss(); 
-        }}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          label="Enter Service Name"
+          value={name}
+          onChangeText={setName}
+          maxLength={20}
+          mode="outlined"
+        />
+      </View>
+
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={category}
+          onValueChange={setCategory}
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+        >
+          {Categories.map((items) => (
+            <Picker.Item key={items} label={items} value={items} />
+          ))}
+        </Picker>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          label="Enter Detailed Description"
+          value={description}
+          onChangeText={setDescription}
+          maxLength={300}
+          multiline
+          onBlur={() => {
+            Keyboard.dismiss();
+          }}
+          mode="outlined"
+        />
+      </View>
+
       <View style={styles.buttonContainer}>
         <Button onPress={handleUpdate} style={styles.updateButton} mode="contained">
           Update
@@ -112,27 +125,37 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
+    flex: 1,
+    marginLeft: 10,
+    borderBottomColor: "gray",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: "gray",
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1,
+    marginLeft: 10
   },
   picker: {
-    backgroundColor: "darkgrey",
-    color: "black",
-    height: 100,
-    fontSize: 13,
-    marginBottom: 10,
+    height: 45,
+  },
+  pickerItem: {
+    textAlign: "center",
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between', 
-    marginTop: 20, 
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
   },
   updateButton: {
     flex: 1,
     marginRight: 10,
-    backgroundColor: "#9F91CC",
+    backgroundColor: "rgb(0, 95, 175)",
   },
   deleteButton: {
     flex: 1,

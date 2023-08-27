@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"; 
-import { Button } from "react-native-paper";
+import { Button, Card } from "react-native-paper"; 
 import { Picker } from "@react-native-picker/picker";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
@@ -25,15 +25,10 @@ const PatientHomeScreen = () => {
 
       const servicesData = [];
       querySnapshot.forEach((doc) => {
-        console.log(doc.id)
         servicesData.push({
           ...doc.data(),
-          id:doc.id,
+          id: doc.id,
         });
-        console.log({
-          ...doc.data(),
-          id:doc.id,
-        })
       });
 
       const filteredServices = servicesData.filter(
@@ -52,28 +47,37 @@ const PatientHomeScreen = () => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ServiceDetailScreen", { service: item})} 
+      onPress={() => navigation.navigate("ServiceDetailScreen", { service: item })} 
       style={styles.serviceContainer}
     >
-      <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
-      <Text>Category: {item.category}</Text>
+      <Card style={styles.cardContainer}> 
+        <Card.Content>
+          <Text style={styles.serviceName}>{item.name}</Text>
+          <Text>Category: {item.category}</Text>
+        </Card.Content>
+      </Card>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
+      <View style={styles.pickerContainer}>
       <Picker
         selectedValue={selectedCategory}
         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
+        style={styles.picker}  
       >
         <Picker.Item label="Select a category" value="" />
         {Categories.map((category, index) => (
           <Picker.Item key={index} label={category} value={category} />
         ))}
       </Picker>
-      <Button onPress={handleSearch} style={styles.button}>
-        <Text>Search</Text>
-      </Button>
+      </View>
+      <View style={styles.buttonContainer}> 
+        <Button onPress={handleSearch} style={styles.button} mode="contained">
+          Search
+        </Button>
+      </View>
       <FlatList
         data={services}
         renderItem={renderItem}
@@ -88,17 +92,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "#f5f5f5",
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1,
+    overflow: "hidden", 
+    
+  },
+  picker: {
+    height: 45,  
+    
   },
   serviceContainer: {
-    marginLeft: 20,
-    marginTop: 15,
+    marginBottom: 15,
+  },
+  cardContainer: {
+    elevation: 3,
+    borderRadius: 10,
+  },
+  serviceName: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  buttonContainer: {
+    alignItems: "center", 
   },
   button: {
-    marginTop: 10,
-    justifyContent: "center",
+    marginBottom: 10,
+    width: 100,
   },
   contentContainerStyle: {
-    paddingBottom: 20
+    paddingBottom: 20,
   }, 
 });
 

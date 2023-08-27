@@ -121,31 +121,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     marginLeft: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-  },
-  optionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    width: '100%',
-  },
-  optionButton: {
-    flex: 1,
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-    flexDirection: 'row',
-  },
-  selectedOption: {
-    backgroundColor: '#907FA4',
-  },
-  icon: {
-    marginRight: 10,
   },
   buttonText: {
     color: 'white',

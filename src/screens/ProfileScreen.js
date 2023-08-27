@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     marginLeft: 10,
-    borderBottomWidth: 1,
     borderBottomColor: 'gray',
   },
   container: {

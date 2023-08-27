@@ -42,8 +42,12 @@ const PatientServiceDetailScreen = ({ route }) => {
           <View style={styles.creatorContainer}>
             <Text style={styles.creatorTitle}>Created By:</Text>
             <Text style={styles.creatorName}>{creator.name}</Text>
+            <Text style={styles.creatorTitle}>Gender:</Text>
+            <Text style={styles.creatorName}>{creator.gender}</Text>
             <Text style={styles.creatorTitle}>Email:</Text>
             <Text style={styles.creatorEmail}>{creator.email}</Text>
+            <Text style={styles.creatorTitle}>Address:</Text>
+            <Text style={styles.creatorName}>{creator.address}</Text>
           </View>
         )}
       </View>

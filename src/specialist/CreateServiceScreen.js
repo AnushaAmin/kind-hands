@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import {View, StyleSheet, TextInput, Alert, ScrollView, Keyboard} from "react-native";
-import { Button } from "react-native-paper";
+import { View, StyleSheet, Alert, ScrollView, Keyboard } from "react-native";
+import { Button, TextInput } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Categories } from "../../config/Constants";
 import "firebase/firestore";
@@ -51,28 +51,34 @@ const CreateServiceScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter name"
-        value={name}
-        onChangeText={setName}
-        maxLength={20}
-      />
-
-      <Picker
-        selectedValue={category}
-        onValueChange={setCategory}
-        itemStyle={styles.picker}
-      >
-        {Categories.map((items) => (
-          <Picker.Item key={items} label={items} value={items} />
-        ))}
-      </Picker>
-
-      <ScrollView scrollEnabled={false}>
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Description"
+          label="Enter Service Name"
+          value={name}
+          onChangeText={setName}
+          maxLength={20}
+          mode="outlined"
+        />
+      </View>
+
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={category}
+          onValueChange={setCategory}
+          style={styles.picker}
+          itemStyle={styles.pickerItem}
+        >
+          {Categories.map((items) => (
+            <Picker.Item key={items} label={items} value={items} />
+          ))}
+        </Picker>
+      </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          label="Enter Detailed Description"
           value={description}
           onChangeText={setDescription}
           maxLength={300}
@@ -80,12 +86,15 @@ const CreateServiceScreen = () => {
           onBlur={() => {
             Keyboard.dismiss();
           }}
+          mode="outlined"
         />
-      </ScrollView>
+      </View>
 
-      <Button mode="contained" onPress={handleSave}>
-        Save
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button mode="contained" onPress={handleSave}>
+          Save
+        </Button>
+      </View>
     </View>
   );
 };
@@ -96,17 +105,27 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
+    flex: 1,
+    marginLeft: 10,
+    borderBottomColor: "gray",
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 20,
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: "gray",
+  },
+  pickerContainer: {
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderWidth: 1,
+    marginLeft: 10
   },
   picker: {
-    backgroundColor: "darkgrey",
-    color: "black",
-    height: 100,
-    fontSize: 13,
-    marginBottom: 10,
+    height: 45,
+  },
+  buttonContainer: {
+    marginTop: 20,
   },
 });
 
