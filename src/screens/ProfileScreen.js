@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity} from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {auth, db} from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -10,37 +10,42 @@ const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const ReadData = async () => {
-      const docRef = doc(db, "users", auth.currentUser.uid);
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
+  const readData = async () => {
+    setLoading(true);
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
       setName(docSnap.data().name);
       setEmail(docSnap.data().email);
       setAddress(docSnap.data().address);
-      }
     }
-    ReadData();
-  }, [])
-
+    setLoading(false);
+  }
 
   const handleUpdateProfile = async() => {
+      setLoading(true);
       const docRef = doc(db, "users", auth.currentUser.uid);
 
       await updateDoc(docRef, {
         name: name,
     
       })
+      setLoading(false);
       Alert.alert('Profile Updated Successfully');
     }
+
+  useEffect(() => {
+    readData();
+  }, [])
      
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
+        <ActivityIndicator style={{ position: 'absolute', top: 100}} animating={loading} />
         <View style={styles.innerFormContainer}>
-
          <View style={styles.inputContainer}>
             <Icon name="user" size={19} />
             <TextInput

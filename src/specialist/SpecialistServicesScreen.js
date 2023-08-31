@@ -4,15 +4,17 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { collection, query as firestoreQuery, getDocs } from "firebase/firestore";
 import { db, auth } from "../../config/firebaseConfig";
-import { Card } from "react-native-paper";
+import { ActivityIndicator, Card } from "react-native-paper";
 
 const SpecialistServicesScreen = () => {
   const navigation = useNavigation();
   const [services, setServices] = useState([]);
   const isFocused = useIsFocused();
+  const [loading, setLoading] = useState(false);
 
   const fetchServices = async () => {
     try {
+      setLoading(true);
       const userServicesCollectionRef = collection(
         db,
         "services",
@@ -32,8 +34,10 @@ const SpecialistServicesScreen = () => {
       });
 
       setServices(fetchedServices);
+      setLoading(false); //success - stop loading
     } catch (error) {
       console.error("Error fetching services:", error);
+      setLoading(false); //error - stop loading
     }
   };
 
@@ -45,6 +49,7 @@ const SpecialistServicesScreen = () => {
 
   return (
     <View style={styles.container}>
+      <ActivityIndicator style={{ marginTop: 10}} animating={loading} />
       <FlatList
         data={services}
         keyExtractor={(item) => item.id}

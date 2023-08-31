@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {getAuth, signInWithEmailAndPassword } from '@firebase/auth';
 import app from '../../config/firebaseConfig';
@@ -10,6 +10,7 @@ const auth = getAuth(app);
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,11 +31,12 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async () => {
     if (validateLoginForm(email, password)) {
       try {
+        setLoading(true);
         await signInWithEmailAndPassword(auth, email, password);
+      } catch (error) {
         setEmail('');
         setPassword('');
-      } catch (error) {
-        console.log(error);
+        setLoading(false);
         Alert.alert('Login failed', error.message);
       }
     }
@@ -46,8 +48,8 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
+        <ActivityIndicator style={{ position: 'absolute', top: 100 }} animating={loading} />
         <View style={styles.innerFormContainer}>
-
           <View style={styles.inputContainer}>
             <Icon name="envelope" size={18} />
             <TextInput
