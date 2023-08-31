@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
               value={email}
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
-              placeholder="Enter Email"
+              label="Enter Email"
             />
           </View>
 
@@ -66,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
               value={password}
               onChangeText={(text) => setPassword(text)}
               secureTextEntry
-              placeholder="Enter Password"
+              label="Enter Password"
             />
           </View>
           <Button onPress={handleLogin} style={styles.loginButton} mode="contained">

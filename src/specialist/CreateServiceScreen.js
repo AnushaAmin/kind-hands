@@ -66,8 +66,6 @@ const CreateServiceScreen = () => {
         <Picker
           selectedValue={category}
           onValueChange={setCategory}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
         >
           {Categories.map((items) => (
             <Picker.Item key={items} label={items} value={items} />
@@ -116,13 +114,6 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    marginLeft: 10
-  },
-  picker: {
-    height: 45,
   },
   buttonContainer: {
     marginTop: 20,

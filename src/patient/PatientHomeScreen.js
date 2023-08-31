@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native"; 
-import { Button, Card } from "react-native-paper"; 
-import { Picker } from "@react-native-picker/picker";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native";
+import { Button, Card, Searchbar } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
 import { collectionGroup, getDocs, query } from "firebase/firestore";
@@ -10,16 +9,16 @@ import { useNavigation } from "@react-navigation/native";
 const PatientHomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [services, setServices] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const navigation = useNavigation();
 
   const handleSearch = async () => {
-    if (!selectedCategory) {
-      alert("Select a category");
-      return;
-    }
-
     try {
+      if (!selectedCategory) {
+        Alert.alert("Select a category");
+        return;
+      }
+
       const q = query(collectionGroup(db, "all-services"));
       const querySnapshot = await getDocs(q);
 
@@ -36,7 +35,7 @@ const PatientHomeScreen = () => {
       );
 
       setServices(filteredServices);
-      
+
       if (filteredServices.length === 0) {
         alert("No service found for this category.");
       }
@@ -45,43 +44,64 @@ const PatientHomeScreen = () => {
     }
   };
 
-  const renderItem = ({ item }) => (
+  useEffect(() => {
+    if (selectedCategory) {
+      handleSearch();
+    }
+  }, [selectedCategory]);
+
+  const renderCategory = (category) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ServiceDetailScreen", { service: item })} 
-      style={styles.serviceContainer}
+      key={category}
+      onPress={() => {setSelectedCategory(category);
+        setSearchQuery(category);
+      }}
+      style={[
+        styles.categoryItem,
+        selectedCategory === category && styles.selectedCategoryItem,
+      ]}
     >
-      <Card style={styles.cardContainer}> 
-        <Card.Content>
-          <Text style={styles.serviceName}>{item.name}</Text>
-          <Text>Category: {item.category}</Text>
-        </Card.Content>
-      </Card>
+      <Text
+        style={[
+          styles.categoryText,
+          selectedCategory === category && styles.selectedCategoryText,
+        ]}
+      >
+        {category}
+      </Text>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <View style={styles.pickerContainer}>
-      <Picker
-        selectedValue={selectedCategory}
-        onValueChange={(itemValue) => setSelectedCategory(itemValue)}
-        style={styles.picker}  
-      >
-        <Picker.Item label="Select a category" value="" />
-        {Categories.map((category, index) => (
-          <Picker.Item key={index} label={category} value={category} />
-        ))}
-      </Picker>
-      </View>
-      <View style={styles.buttonContainer}> 
-        <Button onPress={handleSearch} style={styles.button} mode="contained">
-          Search
-        </Button>
+      <Searchbar
+        placeholder="Search category..."
+        onChangeText={(query) => setSearchQuery(query)}
+        value={searchQuery}
+        onSubmitEditing={handleSearch}
+      />
+      <Text style={styles.heading}>Categories</Text>
+      <View style={styles.categoriesContainer}>
+        {Categories.map((category) => renderCategory(category))}
       </View>
       <FlatList
         data={services}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()} 
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ServiceDetailScreen", { service: item })
+            }
+            style={styles.serviceContainer}
+          >
+            <Card style={styles.cardContainer}>
+              <Card.Content>
+                <Text style={styles.serviceName}>{item.name}</Text>
+                <Text>Category: {item.category}</Text>
+              </Card.Content>
+            </Card>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
         style={styles.contentContainerStyle}
       />
     </View>
@@ -95,17 +115,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "#f5f5f5",
   },
-  pickerContainer: {
-    marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    overflow: "hidden", 
-    
+  heading: {
+    fontSize: 23,
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginTop: 15
   },
-  picker: {
-    height: 45,  
-    
+  categoriesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  categoryItem: {
+    marginVertical: 5,
+    marginHorizontal: 5,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: "#ddd",
+  },
+  selectedCategoryItem: {
+    backgroundColor: "#ddd",
+  },
+  categoryText: {
+    color: "black",
+  },
+  selectedCategoryText: {
+    color: "black",
   },
   serviceContainer: {
     marginBottom: 15,
@@ -118,16 +156,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  buttonContainer: {
-    alignItems: "center", 
-  },
-  button: {
-    marginBottom: 10,
-    width: 100,
-  },
   contentContainerStyle: {
     paddingBottom: 20,
-  }, 
+  },
 });
 
 export default PatientHomeScreen;

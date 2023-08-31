@@ -47,7 +47,7 @@ const ProfileScreen = () => {
               style={styles.input}
               value={name}
               onChangeText={(text) => setName(text)}
-              placeholder="Full Name"
+              label="Full Name"
             />
           </View>
           <View style={styles.inputContainer}>
@@ -57,7 +57,7 @@ const ProfileScreen = () => {
               value={email}
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
-              placeholder="Email"
+              label="Email Address"
               editable={false}
             />
           </View>
@@ -67,7 +67,8 @@ const ProfileScreen = () => {
               style={styles.input}
               value={address}
               onChangeText={(text) => setAddress(text)}
-              placeholder="Enter Your Address"
+              label="Your Address"
+              editable={false}
             />
           </View>
 

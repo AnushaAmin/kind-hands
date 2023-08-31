@@ -136,16 +136,6 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     marginBottom: 20,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    marginLeft: 10
-  },
-  picker: {
-    height: 45,
-  },
-  pickerItem: {
-    textAlign: "center",
   },
   buttonContainer: {
     flexDirection: "row",

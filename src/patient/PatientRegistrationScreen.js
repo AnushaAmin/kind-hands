@@ -72,7 +72,7 @@ const handleRegistration = async () => {
               style={styles.input}
               value={name}
               onChangeText={(text) => setName(text)}
-              placeholder="Enter Full Name"
+              label="Enter Full Name"
             />
           </View>
 
@@ -83,7 +83,7 @@ const handleRegistration = async () => {
               value={email}
               onChangeText={(text) => setEmail(text)}
               keyboardType="email-address"
-              placeholder="Enter Email"
+              label="Enter Email"
             />
           </View>
 
@@ -94,7 +94,7 @@ const handleRegistration = async () => {
               value={password}
               onChangeText={(text) => setPassword(text)}
               secureTextEntry
-              placeholder="Enter Password"
+              label="Enter Password"
             />
           </View>
 
@@ -104,7 +104,7 @@ const handleRegistration = async () => {
               style={styles.input}
               value={address}
               onChangeText={(text) => setAddress(text)}
-              placeholder="Enter Your Address"
+              label="Enter Your Address"
             />
           </View>
 
