@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { Button, TextInput, Checkbox } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
@@ -76,6 +76,7 @@ const handleRegistration = async () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.formContainer}>
         <View style={styles.innerFormContainer}>
 
@@ -187,6 +188,7 @@ const handleRegistration = async () => {
           </View>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 
@@ -198,6 +200,9 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     paddingHorizontal: '5%',
     backgroundColor: '#fff',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   formContainer: {
     flex: 1,
@@ -248,7 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   selectedOption: {
-    backgroundColor: '#907FA4',
+    backgroundColor: 'rgb(81, 96, 111)',
   },
   icon: {
     marginRight: 10,

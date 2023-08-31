@@ -41,7 +41,8 @@ const handleRegistration = async () => {
       const docRef = await setDoc(doc(db, "users", auth.currentUser.uid), {
         name: name,
         email: email,
-        userType: "patient"
+        userType: "patient",
+        address: address
       })
       setName('');
       setEmail('');

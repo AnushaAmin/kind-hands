@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert, ScrollView, Keyboard } from "react-native";
+import { View, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Categories } from "../../config/Constants";
@@ -50,50 +50,49 @@ const CreateServiceScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          label="Enter Service Name"
-          value={name}
-          onChangeText={setName}
-          maxLength={20}
-          mode="outlined"
-        />
-      </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            label="Enter Service Name"
+            value={name}
+            onChangeText={setName}
+            maxLength={50}
+            mode="outlined"
+          />
+        </View>
 
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={category}
-          onValueChange={setCategory}
-        >
-          {Categories.map((items) => (
-            <Picker.Item key={items} label={items} value={items} />
-          ))}
-        </Picker>
-      </View>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={category}
+            onValueChange={setCategory}
+          >
+            {Categories.map((items) => (
+              <Picker.Item key={items} label={items} value={items} />
+            ))}
+          </Picker>
+        </View>
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          label="Enter Detailed Description"
-          value={description}
-          onChangeText={setDescription}
-          maxLength={300}
-          multiline
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-          mode="outlined"
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            label="Enter Detailed Description"
+            value={description}
+            onChangeText={setDescription}
+            maxLength={300}
+            multiline
+            mode="outlined"
+          />
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <Button mode="contained" onPress={handleSave}>
-          Save
-        </Button>
+        <View style={styles.buttonContainer}>
+          <Button mode="contained" onPress={handleSave}>
+            Save
+          </Button>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

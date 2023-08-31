@@ -79,6 +79,7 @@ const PatientHomeScreen = () => {
         onChangeText={(query) => setSearchQuery(query)}
         value={searchQuery}
         onSubmitEditing={handleSearch}
+        style={styles.searchBar}
       />
       <Text style={styles.heading}>Categories</Text>
       <View style={styles.categoriesContainer}>
@@ -133,8 +134,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     paddingHorizontal: 15,
     paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: "#ddd",
+    borderRadius: 10,
+    backgroundColor: "#E6E7E5",
   },
   selectedCategoryItem: {
     backgroundColor: "#ddd",
@@ -158,6 +159,10 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: 20,
+  },
+  searchBar: {
+    borderRadius: 10, 
+    marginBottom: 10,
   },
 });
 
