@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity} from 'react-native';
+import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {auth, db} from '../../config/firebaseConfig';
@@ -42,6 +42,7 @@ const ProfileScreen = () => {
   }, [])
      
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <SafeAreaView style={styles.container}>
       <View style={styles.formContainer}>
         <ActivityIndicator style={{ position: 'absolute', top: 100}} animating={loading} />
@@ -83,6 +84,7 @@ const ProfileScreen = () => {
         </View>
       </View>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 
 };
