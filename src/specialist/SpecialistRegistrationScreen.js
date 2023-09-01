@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity, ScrollView } from 'react-native';
-import { Button, TextInput, Checkbox } from 'react-native-paper';
+import { SafeAreaView, View, Text, Platform, StyleSheet, StatusBar, Alert, TouchableOpacity, ScrollView, Keyboard } from 'react-native';
+import { Button, TextInput, Checkbox, ActivityIndicator } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, createUserWithEmailAndPassword} from '@firebase/auth';
 import app from '../../config/firebaseConfig';
@@ -19,14 +19,14 @@ const SpecialistRegistrationScreen = ({navigation}) => {
   const [isEmployed, setIsEmployed] = useState(false); 
   const [experience, setExperience] = useState(''); 
   const [selectedGender, setSelectedGender] = useState(''); 
-
+  const [loading, setLoading] = useState(false);
 
     const isValidEmail = (email) => {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(email);
          };
 
-    const validateForm = (name, email, password, selectOption, phoneNo, address) => {
+    const validateForm = (name, email, password, phoneNo, address) => {
       if (name === '' || email === '' || password === '' || phoneNo === '' || address === '') {
        Alert.alert('Error', 'Please fill in all fields');
        return false;
@@ -38,6 +38,7 @@ const SpecialistRegistrationScreen = ({navigation}) => {
 };
 
 const handleRegistration = async () => {
+  setLoading(true);
   if (validateForm(name, email, password, phoneNo, address)) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -50,8 +51,9 @@ const handleRegistration = async () => {
         userType: "specialist",
         employed: isEmployed,
         experience: isEmployed ? experience : '',
-        gender: selectedGender,
+        gender: selectedGender
       })
+      Keyboard.dismiss(); 
       setName('');
       setEmail('');
       setPassword('');
@@ -60,7 +62,7 @@ const handleRegistration = async () => {
       setIsEmployed();
       setExperience('');
       setSelectedGender('');
-      
+      setLoading(false);
     } catch (error) {
       console.log(error);
       Alert.alert('Registration failed', error.message);
@@ -177,7 +179,7 @@ const handleRegistration = async () => {
             <Text>Female</Text>
           </TouchableOpacity>
         </View>
-
+        <ActivityIndicator style={{position:"absolute", alignSelf: "center", top: 420}} animating={loading} />
           <Button onPress={handleRegistration} style={styles.registerButton} mode="contained">
             Register
           </Button>
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   selectedOption: {
-    backgroundColor: 'rgb(81, 96, 111)',
+    backgroundColor: '#6FB8DC',
   },
   icon: {
     marginRight: 10,

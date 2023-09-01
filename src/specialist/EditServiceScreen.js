@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, Keyboard } from 'react-native';
+import { View, StyleSheet, Alert, Keyboard, ScrollView } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -68,13 +68,14 @@ const EditServiceScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           label="Enter Service Name"
           value={name}
           onChangeText={setName}
-          maxLength={20}
+          maxLength={50}
           mode="outlined"
         />
       </View>
@@ -115,6 +116,7 @@ const EditServiceScreen = ({ route, navigation }) => {
           Delete
         </Button>
       </View>
+      </ScrollView>
     </View>
   );
 };
@@ -123,6 +125,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   input: {
     flex: 1,

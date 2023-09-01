@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,8 +9,10 @@ const PatientServiceDetailScreen = ({ route }) => {
   const { service } = route.params;
   const [creator, setCreator] = useState(null);
   const [isVerified, setIsVerified] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchCreator = async () => {
       try {
         const creatorDocRef = doc(db, "users", service.user_id);
@@ -17,6 +20,7 @@ const PatientServiceDetailScreen = ({ route }) => {
 
         if (creatorDocSnapshot.exists()) {
           setCreator(creatorDocSnapshot.data());
+          setLoading(false);
          
         } else {
           console.log("Creator not found");
@@ -25,20 +29,20 @@ const PatientServiceDetailScreen = ({ route }) => {
         console.error("Error fetching creator data:", error);
       }
     };
-
     fetchCreator();
   }, [service]);
-
+  
   if (!service) {
     return <Text>No service data available.</Text>;
   }
-
+  
   return (
     <ScrollView style={styles.container}>
       <View style={styles.card}>
         <TouchableOpacity style={styles.contactButton}>
           <Text style={styles.contactButtonText}>Contact</Text>
         </TouchableOpacity>
+        <ActivityIndicator style={{position:"absolute", alignSelf:"center", top: 25}} animating={loading} />
         <View style={styles.creatorContainer}>
           {creator && (
             <View>

@@ -74,13 +74,6 @@ const PatientHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Searchbar
-        placeholder="Search category..."
-        onChangeText={(query) => setSearchQuery(query)}
-        value={searchQuery}
-        onSubmitEditing={handleSearch}
-        style={styles.searchBar}
-      />
       <Text style={styles.heading}>Categories</Text>
       <View style={styles.categoriesContainer}>
         {Categories.map((category) => renderCategory(category))}
@@ -159,11 +152,7 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: 20,
-  },
-  searchBar: {
-    borderRadius: 10, 
-    marginBottom: 10,
-  },
+  }
 });
 
 export default PatientHomeScreen;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ScrollView } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Categories } from "../../config/Constants";
@@ -51,6 +51,7 @@ const CreateServiceScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -92,6 +93,7 @@ const CreateServiceScreen = () => {
           </Button>
         </View>
       </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
@@ -100,6 +102,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
   input: {
     flex: 1,
