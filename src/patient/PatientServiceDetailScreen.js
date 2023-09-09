@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -21,7 +21,6 @@ const PatientServiceDetailScreen = ({ route }) => {
         if (creatorDocSnapshot.exists()) {
           setCreator(creatorDocSnapshot.data());
           setLoading(false);
-         
         } else {
           console.log("Creator not found");
         }
@@ -31,18 +30,39 @@ const PatientServiceDetailScreen = ({ route }) => {
     };
     fetchCreator();
   }, [service]);
-  
+
   if (!service) {
     return <Text>No service data available.</Text>;
   }
-  
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.card}>
-        <TouchableOpacity style={styles.contactButton}>
-          <Text style={styles.contactButtonText}>Contact</Text>
-        </TouchableOpacity>
-        <ActivityIndicator style={{position:"absolute", alignSelf:"center", top: 25}} animating={loading} />
+      <TouchableOpacity
+        style={[styles.contactButton, { zIndex: 1 }]}
+        onPress={() => {
+         if (creator && creator.phoneNumber) {
+          const phoneNumber = creator.phoneNumber.replace("-", ""); 
+          const whatsappURL = `whatsapp://send?phone=${phoneNumber}`;
+          Linking.canOpenURL(whatsappURL)
+        .then((supported) => {
+          if (!supported) {
+            console.log("WhatsApp is not installed on your device.");
+          } else {
+            return Linking.openURL(whatsappURL);
+          }
+        })
+        .catch((err) => console.error("An error occurred", err));
+      } else {
+        console.log("Phone number information not available.");
+      }
+  }}
+>
+  <Text style={styles.contactButtonText}>Contact</Text>
+</TouchableOpacity>
+
+
+        <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: 25 }} animating={loading} />
         <View style={styles.creatorContainer}>
           {creator && (
             <View>
@@ -105,12 +125,12 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    position: "relative", 
+    position: "relative",
   },
   contactButton: {
-    position: "absolute", 
-    top: 30, 
-    right: 20, 
+    position: "absolute",
+    top: 30,
+    right: 20,
     backgroundColor: "rgb(0, 95, 175)",
     paddingVertical: 7,
     paddingHorizontal: 18,
@@ -175,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     color: "#444",
-    marginTop: 10
+    marginTop: 10,
   },
   boldText: {
     fontWeight: "bold",

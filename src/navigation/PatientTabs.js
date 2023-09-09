@@ -28,9 +28,9 @@ const ProfileTab = () => {
         tabBarLabel: () => null,
       })}
     >
-      <Tab.Screen name="PatientHomeScreen" component={PatientHomeScreen} />
-      <Tab.Screen name="PatientProfileScreen" component={PatientProfileScreen} />
-      <Tab.Screen name="PatientSettingScreen" component={PatientSettingScreen} />
+      <Tab.Screen name="PatientHomeScreen" component={PatientHomeScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="PatientProfileScreen" component={PatientProfileScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="PatientSettingScreen" component={PatientSettingScreen} options={{ headerShown: false }}/>
     </Tab.Navigator>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity, Text} from "react-native";
+import { View, StyleSheet, FlatList, TouchableOpacity, Text, Platform, StatusBar} from "react-native";
 import { Button } from "react-native-paper";
 import { getAuth, signOut } from "firebase/auth";
 import app from "../../config/firebaseConfig";
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   button: {
     margin: "20%",

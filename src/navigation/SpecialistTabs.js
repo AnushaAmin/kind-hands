@@ -26,8 +26,8 @@ const SpecialistTabs = () => {
         tabBarLabel: () => null
       })}
     >
-      <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} />
-      <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} />
+      <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} options={{ headerShown: false }}/>
     </Tab.Navigator>
   );
 };

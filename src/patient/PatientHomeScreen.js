@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Platform, StatusBar } from "react-native";
 import { Button, Card, Searchbar } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     paddingHorizontal: 20,
     backgroundColor: "#f5f5f5",
   },
