@@ -57,9 +57,9 @@ const PatientServiceDetailScreen = ({ route }) => {
         console.log("Phone number information not available.");
       }
   }}
->
-  <Text style={styles.contactButtonText}>Contact</Text>
-</TouchableOpacity>
+  >
+    <Text style={styles.contactButtonText}>Contact</Text>
+  </TouchableOpacity>
 
 
         <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: 25 }} animating={loading} />
