@@ -5,6 +5,7 @@ import SpecialistStack from "./src/navigation/SpecialistStack";
 import { useAuth } from "./src/hooks/useAuth";
 import { MD3LightTheme as DefaultTheme, PaperProvider, TextInput } from 'react-native-paper';
 
+
 TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
   mode: "outlined" 
 });
@@ -57,7 +58,6 @@ const theme = {
 
 const App = () => {
   const { user } = useAuth();
-
   if (user && user.userType === "patient") {
     return (
       <PaperProvider theme={theme}>
@@ -75,8 +75,10 @@ const App = () => {
       <PaperProvider theme={theme}>
         <AuthStack />
       </PaperProvider>
+      
     );
   }
+  
 };
 
 export default App;

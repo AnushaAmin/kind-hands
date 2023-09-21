@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Alert, Keyboard, ScrollView } from 'react-native';
+import { View, StyleSheet, Alert, Keyboard, ScrollView, ImageBackground } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { auth, db } from '../../config/firebaseConfig';
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
@@ -67,57 +67,59 @@ const EditServiceScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          label="Enter Service Name"
-          value={name}
-          onChangeText={setName}
-          maxLength={50}
-          mode="outlined"
-        />
-      </View>
+        <View style={styles.container}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              label="Enter Service Name"
+              value={name}
+              onChangeText={setName}
+              maxLength={50}
+              mode="outlined"
+            />
+          </View>
 
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={category}
-          onValueChange={setCategory}
-          style={styles.picker}
-          itemStyle={styles.pickerItem}
-        >
-          {Categories.map((items) => (
-            <Picker.Item key={items} label={items} value={items} />
-          ))}
-        </Picker>
-      </View>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={category}
+              onValueChange={setCategory}
+              style={styles.picker}
+              itemStyle={styles.pickerItem}
+            >
+              {Categories.map((items) => (
+                <Picker.Item key={items} label={items} value={items} />
+              ))}
+            </Picker>
+          </View>
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          label="Enter Detailed Description"
-          value={description}
-          onChangeText={setDescription}
-          maxLength={300}
-          multiline
-          onBlur={() => {
-            Keyboard.dismiss();
-          }}
-          mode="outlined"
-        />
-      </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              label="Enter Detailed Description"
+              value={description}
+              onChangeText={setDescription}
+              maxLength={300}
+              multiline
+              onBlur={() => {
+                Keyboard.dismiss();
+              }}
+              mode="outlined"
+            />
+          </View>
 
-      <View style={styles.buttonContainer}>
-        <Button onPress={handleUpdate} style={styles.updateButton} mode="contained">
-          Update
-        </Button>
-        <Button onPress={handleDelete} style={styles.deleteButton} mode="contained">
-          Delete
-        </Button>
-      </View>
+          <View style={styles.buttonContainer}>
+            <Button onPress={handleUpdate} style={styles.updateButton} mode="contained">
+              Update
+            </Button>
+            <Button onPress={handleDelete} style={styles.deleteButton} mode="contained">
+              Delete
+            </Button>
+          </View>
+        </View>
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -125,6 +127,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
   scrollViewContent: {
     flexGrow: 1,

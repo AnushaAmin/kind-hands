@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, ImageBackground } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
@@ -37,72 +37,75 @@ const PatientServiceDetailScreen = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.card}>
-      <TouchableOpacity
-        style={[styles.contactButton, { zIndex: 1 }]}
-        onPress={() => {
-         if (creator && creator.phoneNumber) {
-          const phoneNumber = creator.phoneNumber.replace("-", ""); 
-          const whatsappURL = `whatsapp://send?phone=${phoneNumber}`;
-          Linking.canOpenURL(whatsappURL)
-        .then((supported) => {
-          if (!supported) {
-            console.log("WhatsApp is not installed on your device.");
-          } else {
-            return Linking.openURL(whatsappURL);
-          }
-        })
-        .catch((err) => console.error("An error occurred", err));
-      } else {
-        console.log("Phone number information not available.");
-      }
-  }}
-  >
-    <Text style={styles.contactButtonText}>Contact</Text>
-  </TouchableOpacity>
+      <ImageBackground source={require("../../assets/texture.jpg")} style={styles.image}>
+        <View style={styles.contentContainer}>
+          <View style={styles.card}>
+            <TouchableOpacity
+              style={[styles.contactButton, { zIndex: 1 }]}
+              onPress={() => {
+                if (creator && creator.phoneNumber) {
+                  const phoneNumber = creator.phoneNumber.replace("-", ""); 
+                  const whatsappURL = `whatsapp://send?phone=${phoneNumber}`;
+                  Linking.canOpenURL(whatsappURL)
+                    .then((supported) => {
+                      if (!supported) {
+                        console.log("WhatsApp is not installed on your device.");
+                      } else {
+                        return Linking.openURL(whatsappURL);
+                      }
+                    })
+                    .catch((err) => console.error("An error occurred", err));
+                } else {
+                  console.log("Phone number information not available.");
+                }
+              }}
+            >
+              <Text style={styles.contactButtonText}>Contact</Text>
+            </TouchableOpacity>
 
-
-        <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: 25 }} animating={loading} />
-        <View style={styles.creatorContainer}>
-          {creator && (
-            <View>
-              <View style={styles.creatorInfo}>
-                <Text style={[styles.creatorTitle, styles.topMargin]}>Name:</Text>
-                <Text style={[styles.creatorName, styles.topMargin]}>{creator.name}</Text>
-              </View>
-              <View style={styles.creatorInfo}>
-                <Text style={styles.creatorTitle}>Gender:</Text>
-                <Text style={styles.creatorName}>{creator.gender}</Text>
-              </View>
-              {creator.experience && (
-                <View style={styles.creatorInfo}>
-                  <Text style={styles.creatorTitle}>Experience:</Text>
-                  <Text style={styles.creatorName}>{creator.experience}</Text>
-                </View>
-              )}
-              <View style={styles.creatorInfo}>
-                <Text style={styles.creatorTitle}>Email:</Text>
-                <Text style={styles.creatorEmail}>{creator.email}</Text>
-              </View>
-              <View style={styles.creatorInfo}>
-                <Text style={styles.creatorTitle}>Address:</Text>
-                <Text style={styles.creatorName}>{creator.address}</Text>
-              </View>
-              {isVerified && (
-                <View style={styles.verifiedContainer}>
-                  <Icon name="check-circle" size={20} color="rgb(0, 95, 175)" />
-                  <Text style={styles.verifiedText}>Verified Service Provider</Text>
+            <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: 25 }} animating={loading} />
+            <View style={styles.creatorContainer}>
+              {creator && (
+                <View>
+                  <View style={styles.creatorInfo}>
+                    <Text style={[styles.creatorTitle, styles.topMargin]}>Name:</Text>
+                    <Text style={[styles.creatorName, styles.topMargin]}>{creator.name}</Text>
+                  </View>
+                  <View style={styles.creatorInfo}>
+                    <Text style={styles.creatorTitle}>Gender:</Text>
+                    <Text style={styles.creatorName}>{creator.gender}</Text>
+                  </View>
+                  {creator.experience && (
+                    <View style={styles.creatorInfo}>
+                      <Text style={styles.creatorTitle}>Experience:</Text>
+                      <Text style={styles.creatorName}>{creator.experience}</Text>
+                    </View>
+                  )}
+                  <View style={styles.creatorInfo}>
+                    <Text style={styles.creatorTitle}>Email:</Text>
+                    <Text style={styles.creatorEmail}>{creator.email}</Text>
+                  </View>
+                  <View style={styles.creatorInfo}>
+                    <Text style={styles.creatorTitle}>Address:</Text>
+                    <Text style={styles.creatorName}>{creator.address}</Text>
+                  </View>
+                  {isVerified && (
+                    <View style={styles.verifiedContainer}>
+                      <Icon name="check-circle" size={20} color="rgb(0, 95, 175)" />
+                      <Text style={styles.verifiedText}>Verified Service Provider</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
-          )}
+            <View style={styles.middleLine}></View>
+            <View style={styles.serviceContent}>
+              <Text style={[styles.serviceCategory, styles.boldText]}>Category: {service.category}</Text>
+              <Text style={styles.serviceDescription}>{service.description}</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.middleLine}></View>
-        <View style={styles.serviceContent}>
-          <Text style={[styles.serviceCategory, styles.boldText]}>Category: {service.category}</Text>
-          <Text style={styles.serviceDescription}>{service.description}</Text>
-        </View>
-      </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
@@ -111,21 +114,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F7F7F7",
-    padding: 20,
+  },
+  image: {
+    resizeMode: "cover",
+  
   },
   card: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F7F7F7",
     borderRadius: 10,
     padding: 20,
+    paddingBottom: "auto",
     elevation: 4,
-    shadowColor: "#000000",
     shadowOpacity: 0.2,
     shadowRadius: 3,
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    position: "relative",
+    margin: 20,
   },
   contactButton: {
     position: "absolute",
@@ -143,7 +149,7 @@ const styles = StyleSheet.create({
   },
   creatorContainer: {
     flexDirection: "column",
-    marginBottom: 20,
+    marginBottom:20,
     borderTopWidth: 1,
     paddingTop: 10,
     borderColor: "#ddd",

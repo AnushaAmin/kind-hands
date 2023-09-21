@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, Platform, StatusBar } from "react-native";
-import { Button, Card, Searchbar } from "react-native-paper";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ImageBackground } from "react-native";
+import { Card} from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
 import { collectionGroup, getDocs, query } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
+
 
 const PatientHomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [services, setServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigation = useNavigation();
+
+  const LocalImage = require("../../assets/texture.jpg")
 
   const handleSearch = async () => {
     try {
@@ -74,7 +77,7 @@ const PatientHomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Categories</Text>
+      <ImageBackground source={LocalImage} resizeMode="cover" style={styles.image}>
       <View style={styles.categoriesContainer}>
         {Categories.map((category) => renderCategory(category))}
       </View>
@@ -98,30 +101,22 @@ const PatientHomeScreen = () => {
         keyExtractor={(item) => item.id}
         style={styles.contentContainerStyle}
       />
+      </ImageBackground>
     </View>
+    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 15,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 20,
     backgroundColor: "#f5f5f5",
-  },
-  heading: {
-    fontSize: 23,
-    fontWeight: "bold",
-    marginBottom: 10,
-    marginTop: 15
   },
   categoriesContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    margin: 10
   },
   categoryItem: {
     marginVertical: 5,
@@ -129,7 +124,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: "#E6E7E5",
+    backgroundColor: "#ffff",
   },
   selectedCategoryItem: {
     backgroundColor: "#ddd",
@@ -146,6 +141,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     elevation: 3,
     borderRadius: 10,
+    backgroundColor:"#CEECF0"
   },
   serviceName: {
     fontWeight: "bold",
@@ -153,7 +149,10 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: 20,
-  }
+  },
+  image: {
+    flex: 1,
+  },
 });
 
 export default PatientHomeScreen;

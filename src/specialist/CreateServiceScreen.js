@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ScrollView } from "react-native";
+import { View, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ScrollView, ImageBackground } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { Categories } from "../../config/Constants";
@@ -50,51 +50,53 @@ const CreateServiceScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            label="Enter Service Name"
-            value={name}
-            onChangeText={setName}
-            maxLength={50}
-            mode="outlined"
-          />
-        </View>
+    <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          <View style={styles.container}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                label="Enter Service Name"
+                value={name}
+                onChangeText={setName}
+                maxLength={50}
+                mode="outlined"
+              />
+            </View>
 
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={category}
-            onValueChange={setCategory}
-          >
-            {Categories.map((items) => (
-              <Picker.Item key={items} label={items} value={items} />
-            ))}
-          </Picker>
-        </View>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={category}
+                onValueChange={setCategory}
+              >
+                {Categories.map((items) => (
+                  <Picker.Item key={items} label={items} value={items} />
+                ))}
+              </Picker>
+            </View>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            label="Enter Detailed Description"
-            value={description}
-            onChangeText={setDescription}
-            maxLength={300}
-            multiline
-            mode="outlined"
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                label="Enter Detailed Description"
+                value={description}
+                onChangeText={setDescription}
+                maxLength={300}
+                multiline
+                mode="outlined"
+              />
+            </View>
 
-        <View style={styles.buttonContainer}>
-          <Button mode="contained" onPress={handleSave}>
-            Save
-          </Button>
-        </View>
-      </View>
-      </ScrollView>
-    </TouchableWithoutFeedback>
+            <View style={styles.buttonContainer}>
+              <Button mode="contained" onPress={handleSave}>
+                Save
+              </Button>
+            </View>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </ImageBackground>
   );
 };
 
@@ -105,6 +107,11 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     flexGrow: 1,
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
   },
   input: {
     flex: 1,

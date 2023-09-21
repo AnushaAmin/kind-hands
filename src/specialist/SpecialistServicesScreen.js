@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, FlatList, Text, TouchableOpacity, ImageBackground } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { collection, query as firestoreQuery, getDocs } from "firebase/firestore";
@@ -34,10 +34,10 @@ const SpecialistServicesScreen = () => {
       });
 
       setServices(fetchedServices);
-      setLoading(false); //success - stop loading
+      setLoading(false); // success - stop loading
     } catch (error) {
       console.error("Error fetching services:", error);
-      setLoading(false); //error - stop loading
+      setLoading(false); // error - stop loading
     }
   };
 
@@ -48,42 +48,49 @@ const SpecialistServicesScreen = () => {
   }, [isFocused]);
 
   return (
-    <View style={styles.container}>
-      <ActivityIndicator style={{ marginTop: 10}} animating={loading} />
-      <FlatList
-        data={services}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.serviceItem}
-            onPress={() => {
-              navigation.navigate("EditServiceScreen", { serviceId: item.id });
-            }}
-          >
-            <Card style={styles.card}>
-              <Card.Content>
-                <Text style={styles.serviceName}>{item.name}</Text>
-                <Text style={styles.serviceCategory}>
-                  Category: {item.category}
-                </Text>
-              </Card.Content>
-            </Card>
-          </TouchableOpacity>
-        )}
-      />
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => {
-          navigation.navigate("CreateServiceScreen");
-        }}
-      >
-        <FontAwesome name="plus" size={25} color="white" />
-      </TouchableOpacity>
-    </View>
+    <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
+      <View style={styles.container}>
+        <ActivityIndicator style={{ marginTop: 10}} animating={loading} />
+        <FlatList
+          data={services}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.serviceItem}
+              onPress={() => {
+                navigation.navigate("EditServiceScreen", { serviceId: item.id });
+              }}
+            >
+              <Card style={styles.card}>
+                <Card.Content>
+                  <Text style={styles.serviceName}>{item.name}</Text>
+                  <Text style={styles.serviceCategory}>
+                    Category: {item.category}
+                  </Text>
+                </Card.Content>
+              </Card>
+            </TouchableOpacity>
+          )}
+        />
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            navigation.navigate("CreateServiceScreen");
+          }}
+        >
+          <FontAwesome name="plus" size={25} color="white" />
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
   },
