@@ -20,22 +20,22 @@ const SpecialistStack = () => {
         <Stack.Screen
           name="SpecialistServicesScreen"
           component={SpecialistServicesScreen}
-          options={{ title: "Services" }}
+          options={{ title: "Services",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
         <Stack.Screen
           name="CreateServiceScreen"
           component={CreateServiceScreen}
-          options={{ title: "Create" }}
+          options={{ title: "Create",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
         <Stack.Screen
           name="EditServiceScreen"
           component={EditServiceScreen}
-          options={{ title: "Edit" }}
+          options={{ title: "Edit",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
         <Stack.Screen
           name="SpecialistVerificationScreen"
           component={SpecialistVerificationScreen}
-          options={{ title: "Verification" }}
+          options={{ title: "Verification",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
         
       </Stack.Navigator>

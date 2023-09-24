@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     elevation: 3,
     borderRadius: 10,
-    backgroundColor:"#CEECF0"
+
   },
   serviceName: {
     fontWeight: "bold",

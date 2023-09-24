@@ -36,9 +36,9 @@ const PatientServiceDetailScreen = ({ route }) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <ImageBackground source={require("../../assets/texture.jpg")} style={styles.image}>
-        <View style={styles.contentContainer}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.card}>
             <TouchableOpacity
               style={[styles.contactButton, { zIndex: 1 }]}
@@ -104,9 +104,9 @@ const PatientServiceDetailScreen = ({ route }) => {
               <Text style={styles.serviceDescription}>{service.description}</Text>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </ImageBackground>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -116,8 +116,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F7F7F7",
   },
   image: {
+    flex: 1,
     resizeMode: "cover",
-  
+  },
+  contentContainer: {
+    flexGrow: 1,
   },
   card: {
     backgroundColor: "#F7F7F7",
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   },
   creatorContainer: {
     flexDirection: "column",
-    marginBottom:20,
+    marginBottom: 20,
     borderTopWidth: 1,
     paddingTop: 10,
     borderColor: "#ddd",
@@ -202,6 +205,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: "#444",
     marginTop: 10,
+    textAlign: "justify",
   },
   boldText: {
     fontWeight: "bold",

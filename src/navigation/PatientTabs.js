@@ -24,15 +24,15 @@ const ProfileTab = () => {
             iconName = 'home';
           }
 
-          return <Icon name={iconName} size={size} color={focused ? 'rgb(0, 95, 175)' : 'gray'} />;
+          return <Icon name={iconName} size={size} color={focused ? 'rgb(0, 95, 175)' : 'grey'} />;
         },
         tabBarLabel: () => null,
       })}
-      style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }} // Add paddingTop here
+      style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }} 
     >
-      <Tab.Screen name="Categories" component={PatientHomeScreen} options={{ headerStyle: { backgroundColor: '#CEECF0' }, headerTintColor: 'black' }} />
+      <Tab.Screen name="Categories" component={PatientHomeScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
       <Tab.Screen name="PatientProfileScreen" component={PatientProfileScreen} options={{ headerShown: false }}/>
-      <Tab.Screen name="Settings" component={PatientSettingScreen} options={{ headerStyle: { backgroundColor: '#CEECF0' }, headerTintColor: 'black' }} />
+      <Tab.Screen name="Settings" component={PatientSettingScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
     </Tab.Navigator>
   );
 };
