@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ImageBackground, ActivityIndicator } from "react-native";
 import { Card} from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
@@ -11,12 +11,14 @@ const PatientHomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [services, setServices] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const LocalImage = require("../../assets/texture.jpg")
 
   const handleSearch = async () => {
     try {
+      setLoading(true);
       if (!selectedCategory) {
         Alert.alert("Select a category");
         return;
@@ -44,6 +46,9 @@ const PatientHomeScreen = () => {
       }
     } catch (error) {
       console.error("Error fetching services:", error);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -81,6 +86,7 @@ const PatientHomeScreen = () => {
       <View style={styles.categoriesContainer}>
         {Categories.map((category) => renderCategory(category))}
       </View>
+      <ActivityIndicator style={{ position: 'absolute', top: '30%', left: '50%', transform: [{ translateX: -25 }, { translateY: -25 }] }} animating={loading} color="rgb(0, 95, 175)"  />
       <FlatList
         data={services}
         renderItem={({ item }) => (
@@ -90,6 +96,7 @@ const PatientHomeScreen = () => {
             }
             style={styles.serviceContainer}
           >
+
             <Card style={styles.cardContainer}>
               <Card.Content>
                 <Text style={styles.serviceName}>{item.name}</Text>
@@ -149,6 +156,7 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: 20,
+    marginTop: 20
   },
   image: {
     flex: 1,

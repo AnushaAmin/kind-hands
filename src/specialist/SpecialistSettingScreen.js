@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     margin: "20%",
     width: "50%",
     justifyContent: "center",
+  
   },
   item: {
     padding: 10,

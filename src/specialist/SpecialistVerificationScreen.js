@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, StyleSheet, Alert, Image } from "react-native";
-import { Button, ProgressBar} from "react-native-paper";
+import { SafeAreaView, StyleSheet, Alert, Image, ImageBackground } from "react-native";
+import { Button, ProgressBar } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import { auth, db, storage } from "../../config/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -10,10 +10,9 @@ const SpecialistVerificationScreen = () => {
   const [picture, setPicture] = useState(null);
   const [image, setImage] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  
+
   useEffect(() => {
     const uploadImage = async () => {
-    
       const blobImage = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.onload = function () {
@@ -26,11 +25,11 @@ const SpecialistVerificationScreen = () => {
         xhr.open("GET", image, true);
         xhr.send(null);
       });
-      
+
       const metadata = {
         contentType: "image/jpeg",
       };
-     
+
       const storageRef = ref(storage, "verification/" + Date.now());
       const uploadTask = uploadBytesResumable(storageRef, blobImage, metadata);
 
@@ -39,7 +38,7 @@ const SpecialistVerificationScreen = () => {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadProgress(progress);
+          setUploadProgress(progress);
         },
         (error) => {
           switch (error.code) {
@@ -71,7 +70,7 @@ const SpecialistVerificationScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.canceled && result.assets.length > 0) {
       const selectedAsset = result.assets[0];
       setImage(selectedAsset.uri);
@@ -98,28 +97,33 @@ const SpecialistVerificationScreen = () => {
     }
   };
 
-  
   return (
-    <SafeAreaView style={styles.container}>
-      {picture && (
-        <Image source={{ uri: picture }} style={styles.previewImage} />
-      )}
-      <Button style={styles.button} onPress={pickImage}>
-        Pick an Image
-      </Button>
-      {uploadProgress > 0 && (
-        <ProgressBar progress={uploadProgress / 100} color="#6200ee" />
-      )}
-      <Button
-        style={styles.button}
-        disabled={!picture || uploadProgress != 100} 
-        onPress={handleUpload}
-      >
-        Upload
-      </Button>
-    </SafeAreaView>
+    <ImageBackground
+      source={require("../../assets/texture.jpg")} // Adjust the path based on your image
+      style={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.container}>
+        {picture && (
+          <Image source={{ uri: picture }} style={styles.previewImage} />
+        )}
+        <Button style={styles.button} onPress={pickImage}>
+          Pick an Image
+        </Button>
+        {uploadProgress > 0 && (
+          <ProgressBar progress={uploadProgress / 100} color="#6200ee" />
+        )}
+        <Button
+          style={styles.button}
+          disabled={!picture || uploadProgress !== 100}
+          onPress={handleUpload}
+        >
+          Upload
+        </Button>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -135,5 +139,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 70,
   },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+  },
 });
+
 export default SpecialistVerificationScreen;
