@@ -37,7 +37,7 @@ const SpecialistSettingScreen = () => {
           keyExtractor={(item) => item.id}
         />
         <Button
-          style={styles.button}
+          style={[styles.button, styles.logoutButton]}
           mode="contained"
           onPress={() => signOut(auth)}
         >
@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
     width: "50%",
     justifyContent: "center",
   
+  },
+  logoutButton: {
+    backgroundColor: 'red',
   },
   item: {
     padding: 10,
