@@ -8,6 +8,7 @@ import { MD3LightTheme as DefaultTheme, PaperProvider, TextInput } from 'react-n
 
 TextInput.defaultProps = Object.assign({}, TextInput.defaultProps, {
   mode: "outlined" 
+  
 });
 
 const theme = {
