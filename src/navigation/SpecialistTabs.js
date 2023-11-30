@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SpecialistProfileScreen from '../specialist/SpecialistProfileScreen';
 import SpecialistSettingScreen from '../specialist/SpecialistSettingScreen';
+import ChatScreen from '../screens/ChatScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
@@ -20,6 +21,8 @@ const SpecialistTabs = () => {
           } else if (route.name === 'SpecialistSettingScreen') {
             iconName = 'cog';
             
+          } else if (route.name === "ChatScreen"){
+            iconName = 'comments';
           }
           return <Icon name={iconName} size={size} color={focused ? 'rgb(0, 95, 175)' : 'gray'} />;
         },
@@ -28,6 +31,7 @@ const SpecialistTabs = () => {
     >
       <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} options={{ headerShown: false }}/>
       <Tab.Screen name="SpecialistSettingScreen" component={SpecialistSettingScreen} options={{ headerShown: false }}/>
+      <Tab.Screen name="ChatScreen" component={ChatScreen} />
     </Tab.Navigator>
   );
 };

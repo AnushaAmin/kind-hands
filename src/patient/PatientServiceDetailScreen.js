@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking, ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ImageBackground, Alert } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { db } from "../../config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, getDocs, query, where, and } from "firebase/firestore";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { auth } from "../../config/firebaseConfig";
 
-const PatientServiceDetailScreen = ({ route }) => {
+const PatientServiceDetailScreen = ({ route, navigation }) => {
   const { service } = route.params;
   const [creator, setCreator] = useState(null);
   const [isVerified, setIsVerified] = useState(true);
@@ -35,6 +36,39 @@ const PatientServiceDetailScreen = ({ route }) => {
     return <Text>No service data available.</Text>;
   }
 
+  const createGroup = async () => {
+    try {
+      const groupRef = await addDoc(collection(db, 'groups'), {
+          patientId: auth.currentUser.uid,
+          specialistId: service.user_id
+      });
+    } catch (error) {
+      console.error('Error creating group:', error);
+      throw error;
+    }
+  };
+
+  const handleContactPress = async () => {
+    try {
+      const groupExists = await getDocs(query(collection(db, 'groups'),
+        where("patientId", "==", auth.currentUser.uid),
+        where("specialistId", "==", service.user_id)
+      ));
+      
+      if (groupExists.size > 0) {
+        const existingGroup = groupExists.docs[0].data();
+        navigation.navigate('ChatScreen', { groupId: groupExists.docs[0].id});
+      } else {
+        const groupId = await createGroup();
+        navigation.navigate('ChatScreen', { groupId });
+      }
+    } catch (error) {
+      console.error('Error checking or creating group:', error);
+      Alert.alert('Error', 'Unable to start the chat. Please try again later.');
+    }
+  };
+  
+
   return (
     <View style={styles.container}>
       <ImageBackground source={require("../../assets/texture.jpg")} style={styles.image}>
@@ -42,23 +76,7 @@ const PatientServiceDetailScreen = ({ route }) => {
           <View style={styles.card}>
             <TouchableOpacity
               style={[styles.contactButton, { zIndex: 1 }]}
-              onPress={() => {
-                if (creator && creator.phoneNumber) {
-                  const phoneNumber = creator.phoneNumber.replace("-", ""); 
-                  const whatsappURL = `whatsapp://send?phone=${phoneNumber}`;
-                  Linking.canOpenURL(whatsappURL)
-                    .then((supported) => {
-                      if (!supported) {
-                        console.log("WhatsApp is not installed on your device.");
-                      } else {
-                        return Linking.openURL(whatsappURL);
-                      }
-                    })
-                    .catch((err) => console.error("An error occurred", err));
-                } else {
-                  console.log("Phone number information not available.");
-                }
-              }}
+              onPress={handleContactPress}
             >
               <Text style={styles.contactButtonText}>Contact</Text>
             </TouchableOpacity>

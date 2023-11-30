@@ -5,7 +5,7 @@ import PatientPrivacyScreen from "../patient/PatientPrivacyScreen";
 import PatientDisclaimerScreen from "../patient/PatientDisclaimerScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -38,7 +38,7 @@ const PatientStack = () => {
           component={PatientDisclaimerScreen}
           options={{ title: "Disclaimer", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
-      
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

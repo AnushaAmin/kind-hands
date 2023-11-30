@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Platform, StatusBar } from 'react-native'; // Import Platform and StatusBar
+import { Platform, StatusBar } from 'react-native'; 
 import PatientProfileScreen from '../patient/PatientProfileScreen';
 import PatientSettingScreen from '../patient/PatientSettingsScreen';
 import PatientHomeScreen from '../patient/PatientHomeScreen';
@@ -33,7 +33,7 @@ const ProfileTab = () => {
       <Tab.Screen name="Categories" component={PatientHomeScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
       <Tab.Screen name="PatientProfileScreen" component={PatientProfileScreen} options={{ headerShown: false }}/>
       <Tab.Screen name="Settings" component={PatientSettingScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
-    </Tab.Navigator>
+      </Tab.Navigator>
   );
 };
 
