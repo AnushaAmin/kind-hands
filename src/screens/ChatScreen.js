@@ -1,41 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput,ActivityIndicator, FlatList, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { auth, db } from "../../config/firebaseConfig";
-import { addDoc, collection, query, where, getDocs, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, query, where, getDocs, serverTimestamp, orderBy } from "firebase/firestore";
 
 const ChatScreen = ({ route }) => {
-  const { groupId } = route.params;
+  const { params } = route;
+  const groupId = params?.groupId; 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const fetchMessages = async () => {
     try {
-      const messagesCollection = collection(db, 'messages');
-      const messagesQuery = await getDocs(query(messagesCollection, where("groupId", "==", groupId)));
-
-      const messagesData = messagesQuery.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setMessages(messagesData);
+      if (groupId) {
+        const messagesCollection = collection(db, 'messages');
+        const messagesQuery = await getDocs(
+          query(messagesCollection, where("groupId", "==", groupId), orderBy('createdAt'))
+        );
+          const messagesData = messagesQuery.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setMessages(messagesData);
+         // console.log(messagesData)
+         setLoading(false);
+      }
+      
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
   };
+  
+
+  function callMessage() {
+    //console.log('callMessage')
+    fetchMessages()
+  }
 
   useEffect(() => {
     if (groupId) {
-      fetchMessages();
+      setLoading(true);
+      setInterval(callMessage, 3000)
     }
   }, [groupId]);
-  
 
   const handleSend = async () => {
     try {
-      const messageRef = await addDoc(collection(db, 'messages'),{
+      const messageRef = await addDoc(collection(db, 'messages'), {
         groupId,
         text: newMessage,
         sender: auth.currentUser.uid,
         createdAt: serverTimestamp(),
       });
-      setMessages([...messages, { id: messageRef.id, groupId, text: newMessage, sender: auth.currentUser.uid, createdAt: new Date() }]);
+
+      setMessages([...messages, {
+        id: messageRef.id,
+        groupId,
+        text: newMessage,
+        sender: auth.currentUser.uid,
+        createdAt: new Date(),
+      }]);
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
@@ -45,6 +66,7 @@ const ChatScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <ActivityIndicator style={{ position: "absolute", alignSelf: "center", top: 25 }} animating={loading} />
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
@@ -68,7 +90,6 @@ const ChatScreen = ({ route }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

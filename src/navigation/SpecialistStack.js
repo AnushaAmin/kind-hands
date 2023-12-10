@@ -5,6 +5,7 @@ import EditServiceScreen from "../specialist/EditServiceScreen";
 import SpecialistVerificationScreen from '../specialist/SpecialistVerificationScreen';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ChatScreen from "../screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +38,12 @@ const SpecialistStack = () => {
           component={SpecialistVerificationScreen}
           options={{ title: "Verification",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
-        
+        <Stack.Screen  name="ChatScreen"  component={ChatScreen}  options={({ route }) => ({
+           title: route.params?.patientName || 'Chat',
+           headerStyle: { backgroundColor: 'rgb(0, 95, 175)' },
+           headerTintColor: 'white',
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

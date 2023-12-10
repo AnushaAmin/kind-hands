@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   profileMockup: {
     alignItems: 'center',
-    marginTop: '20%',
+    marginTop: '10%',
   },
   profileName: {
     fontSize: 24,

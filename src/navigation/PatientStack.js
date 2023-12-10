@@ -38,7 +38,12 @@ const PatientStack = () => {
           component={PatientDisclaimerScreen}
           options={{ title: "Disclaimer", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen  name="ChatScreen"  component={ChatScreen}  options={({ route }) => ({
+           title: route.params?.specialistName || 'Chat',
+           headerStyle: { backgroundColor: 'rgb(0, 95, 175)' },
+           headerTintColor: 'white',
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

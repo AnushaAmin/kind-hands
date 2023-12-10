@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    marginTop:30
   },
   button: {
     margin: "20%",
