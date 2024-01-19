@@ -37,6 +37,7 @@ const ProfileTab = () => {
       <Tab.Screen name="Profile" component={PatientProfileScreen}  options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="Messages" component={PatientMessagesScreen}  options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="Settings" component={PatientSettingScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
+      
       </Tab.Navigator>
   );
 };
