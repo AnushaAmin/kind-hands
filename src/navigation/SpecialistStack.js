@@ -6,6 +6,7 @@ import SpecialistVerificationScreen from '../specialist/SpecialistVerificationSc
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChatScreen from "../screens/ChatScreen";
+import SpecialistJobOffers from "../specialist/SpecialistJobOffers";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ const SpecialistStack = () => {
            headerStyle: { backgroundColor: 'rgb(0, 95, 175)' },
            headerTintColor: 'white',
           })}
+        />
+        <Stack.Screen
+          name="SpecialistJobOffers"
+          component={SpecialistJobOffers}
+          options={{ title: "Job Offers",  headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

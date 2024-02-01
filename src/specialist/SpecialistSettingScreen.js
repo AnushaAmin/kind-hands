@@ -57,13 +57,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight * 0.5 : 0,
   },
   button: {
     margin: "20%",
     width: "50%",
     justifyContent: "center",
-  
   },
   logoutButton: {
     backgroundColor: 'red',

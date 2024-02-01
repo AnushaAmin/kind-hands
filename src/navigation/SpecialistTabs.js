@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import SpecialistProfileScreen from '../specialist/SpecialistProfileScreen';
 import SpecialistSettingScreen from '../specialist/SpecialistSettingScreen';
 import SpecialistMessagesScreen from '../specialist/SpecialistMessagesScreen';
+import SpecialistJobScreen from '../specialist/SpecialistJobScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Tab = createBottomTabNavigator();
@@ -25,11 +26,15 @@ const SpecialistTabs = () => {
             iconName = 'cog';
             
           } 
+          else if (route.name === 'SpecialistJobScreen'){
+            iconName = 'briefcase';
+          }
           return <Icon name={iconName} size={size} color={focused ? 'rgb(0, 95, 175)' : 'gray'} />;
         },
         tabBarLabel: () => null
       })}
     >
+      <Tab.Screen name="SpecialistJobScreen" component={SpecialistJobScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="SpecialistProfileScreen" component={SpecialistProfileScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="Messages" component={SpecialistMessagesScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="Settings" component={SpecialistSettingScreen}  options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>

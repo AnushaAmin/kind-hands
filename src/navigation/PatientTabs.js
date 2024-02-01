@@ -6,6 +6,7 @@ import PatientProfileScreen from '../patient/PatientProfileScreen';
 import PatientSettingScreen from '../patient/PatientSettingsScreen';
 import PatientHomeScreen from '../patient/PatientHomeScreen';
 import PatientMessagesScreen from '../patient/PatientMessagesScreen';
+import PatientJobScreen from '../patient/PatientJobScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +24,10 @@ const ProfileTab = () => {
             iconName = 'cog';
           } else if (route.name === 'Categories') {
             iconName = 'home';
-          }else if (route.name === "Messages"){
+          } else if (route.name === 'Messages') {
             iconName = 'comments';
+          } else if (route.name === 'Jobs'){
+            iconName = 'briefcase';
           }
 
           return <Icon name={iconName} size={size} color={focused ? 'rgb(0, 95, 175)' : 'grey'} />;
@@ -36,10 +39,14 @@ const ProfileTab = () => {
       <Tab.Screen name="Categories" component={PatientHomeScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
       <Tab.Screen name="Profile" component={PatientProfileScreen}  options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
       <Tab.Screen name="Messages" component={PatientMessagesScreen}  options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}/>
+      <Tab.Screen name="Jobs" component={PatientJobScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
       <Tab.Screen name="Settings" component={PatientSettingScreen} options={{ headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }} />
       
-      </Tab.Navigator>
+    </Tab.Navigator>
   );
 };
 
 export default ProfileTab;
+
+
+

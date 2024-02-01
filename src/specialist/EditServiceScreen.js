@@ -147,7 +147,20 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   pickerContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    overflow: "hidden",
+    marginTop: 5,
     marginBottom: 20,
+    borderColor: "black",
+    borderWidth: 1,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+  },
+  pickerItem: {
+    color: "black",
   },
   buttonContainer: {
     flexDirection: "row",

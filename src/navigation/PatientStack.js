@@ -6,6 +6,9 @@ import PatientDisclaimerScreen from "../patient/PatientDisclaimerScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChatScreen from "../screens/ChatScreen";
+import CreateJobsScreen from "../patient/CreateJobsScreen";
+import EditJobScreen from "../patient/EditJobScreen";
+import OffersScreen from "../patient/OffersScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +17,7 @@ const PatientStack = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Profile"
+          name="PatientProfile"
           component={PatientTabs}
           options={{ headerShown: false }}
         /> 
@@ -44,6 +47,23 @@ const PatientStack = () => {
            headerTintColor: 'white',
           })}
         />
+        <Stack.Screen
+          name="CreateJobsScreen"
+          component={CreateJobsScreen}
+          options={{ title: "Create Jobs", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
+        />
+        <Stack.Screen
+          name="EditJobScreen"
+          component={EditJobScreen}
+          options={{ title: "Edit Jobs", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
+        />
+        <Stack.Screen
+          name="OffersScreen"
+          component={OffersScreen}
+          options={{ title: "Offers", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
+        />
+       
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
