@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, FlatList, TouchableOpacity, ImageBackground, StyleSheet, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { collection, query, getDocs } from "firebase/firestore";
-import { db } from "../../config/firebaseConfig";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db, auth } from "../../config/firebaseConfig";
 import { ActivityIndicator, Card, Paragraph } from "react-native-paper";
 
 const PatientJobScreen = () => {
@@ -14,8 +14,13 @@ const PatientJobScreen = () => {
   const fetchJobs = async () => {
     try {
       setLoading(true);
+
+      // Get the currently logged-in user's ID
+      const currentUserID = auth.currentUser?.uid;
+
+      // Only fetch jobs created by the current user
       const jobsCollectionRef = collection(db, "jobs");
-      const jobsQuery = query(jobsCollectionRef);
+      const jobsQuery = query(jobsCollectionRef, where("user_id", "==", currentUserID));
 
       const querySnapshot = await getDocs(jobsQuery);
 
@@ -50,9 +55,7 @@ const PatientJobScreen = () => {
             <TouchableOpacity
               style={styles.jobItem}
               onPress={() => {
-                // When navigating to EditJobScreen, pass the entire job object
-               navigation.navigate('EditJobScreen', { job: item });
-
+                navigation.navigate('EditJobScreen', { job: item });
               }}
             >
               <Card style={styles.card}>

@@ -78,9 +78,6 @@ const EditJobScreen = ({ route, navigation }) => {
       Alert.alert('Error', 'Unable to update the job. Please try again later.');
     }
   };
-  const navigateToOffersScreen = () => {
-    navigation.navigate('OffersScreen');
-  };
 
   return (
     <View style={styles.container}>
@@ -185,11 +182,18 @@ const EditJobScreen = ({ route, navigation }) => {
                 <Text style={styles.buttonText}>{isEditFormVisible ? 'Cancel' : 'Edit'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.updateButton, { backgroundColor: "green" }]}
-                onPress={isEditFormVisible ? handleSave : navigateToOffersScreen}
-              >
-                <Text style={styles.buttonText}>{isEditFormVisible ? 'Save' : 'Offers'}</Text>
-              </TouchableOpacity>
+            style={[styles.updateButton, { backgroundColor: "green" }]}
+            onPress={() => {
+              if (isEditFormVisible) {
+                handleSave();
+              } else {
+                navigation.navigate("JobOfferScreen", { jobId: job.id });
+              }
+            }}
+          >
+          <Text style={styles.buttonText}>{isEditFormVisible ? 'Save' : 'Offers'}</Text>
+        </TouchableOpacity>
+
             </View>
           </View>
         </ScrollView>

@@ -12,8 +12,6 @@ const CreateJobsScreen = () => {
   const [description, setDescription] = useState("");
   const [genderPreference, setGenderPreference] = useState("male");
   const [address, setAddress] = useState("");
- // const [selectedCategory, setSelectedCategory] = useState(Categories[0]);
-  //const [selectedGender, setSelectedGender] = useState("male");
   const navigation = useNavigation();
 
   const requirementCheck = () => {
@@ -34,17 +32,14 @@ const CreateJobsScreen = () => {
           description,
           genderPreference,
           address,
-         // category: selectedCategory,
-         // selectedGender,
         });
 
-        // Clear form fields if needed
         setServiceRequired("");
         setDescription("");
         setGenderPreference("");
         setAddress("");
 
-        navigation.navigate("PatientJobScreen"); // Redirect to the jobs screen after creating a job
+        navigation.navigate("PatientJobScreen"); 
       } catch (error) {
         console.error("Error creating job:", error);
       }

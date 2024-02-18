@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ChatScreen from "../screens/ChatScreen";
 import CreateJobsScreen from "../patient/CreateJobsScreen";
 import EditJobScreen from "../patient/EditJobScreen";
-import OffersScreen from "../patient/OffersScreen";
+import JobOfferScreen from "../patient/JobOfferScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,8 +58,8 @@ const PatientStack = () => {
           options={{ title: "Edit Jobs", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
         <Stack.Screen
-          name="OffersScreen"
-          component={OffersScreen}
+          name="JobOfferScreen"
+          component={JobOfferScreen}
           options={{ title: "Offers", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
        
