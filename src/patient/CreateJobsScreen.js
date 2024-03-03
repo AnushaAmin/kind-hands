@@ -49,67 +49,98 @@ const CreateJobsScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
-          {/* <View style={styles.inputContainer}>
-            <Text style={styles.label}>Service Required<Text style={styles.star}>*</Text></Text>
-            <View style={[styles.input, styles.pickerContainer]}>
-              <Picker
-                selectedValue={serviceRequired}
-                onValueChange={(itemValue) => setServiceRequired(itemValue)}
-              >
-                {Categories.map((category) => (
-                  <Picker.Item key={category} label={category} value={category} />
-                ))}
-              </Picker>
-            </View>
-          </View>
+    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    //     <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
+    //       {/* <View style={styles.inputContainer}>
+    //         <Text style={styles.label}>Service Required<Text style={styles.star}>*</Text></Text>
+    //         <View style={[styles.input, styles.pickerContainer]}>
+    //           <Picker
+    //             selectedValue={serviceRequired}
+    //             onValueChange={(itemValue) => setServiceRequired(itemValue)}
+    //           >
+    //             {Categories.map((category) => (
+    //               <Picker.Item key={category} label={category} value={category} />
+    //             ))}
+    //           </Picker>
+    //         </View>
+    //       </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Description<Text style={styles.star}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              label="Enter Description"
-              value={description}
-              onChangeText={setDescription}
-              maxLength={300}
-              multiline
-              mode="outlined"
-            />
-          </View>
+    //       <View style={styles.inputContainer}>
+    //         <Text style={styles.label}>Description<Text style={styles.star}>*</Text></Text>
+    //         <TextInput
+    //           style={styles.input}
+    //           label="Enter Description"
+    //           value={description}
+    //           onChangeText={setDescription}
+    //           maxLength={300}
+    //           multiline
+    //           mode="outlined"
+    //         />
+    //       </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Gender Preference<Text style={styles.star}>*</Text></Text>
-            <View style={styles.radioContainer}>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="male"
-                  status={genderPreference === "male" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("male")}
-                />
-                <Text>Male</Text>
-              </View>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="female"
-                  status={genderPreference === "female" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("female")}
-                />
-                <Text>Female</Text>
-              </View>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="none"
-                  status={genderPreference === "none" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("none")}
-                />
-                <Text>None</Text>
-              </View>
-            </View>
-          </View> */}
+    //       <View style={styles.inputContainer}>
+    //         <Text style={styles.label}>Gender Preference<Text style={styles.star}>*</Text></Text>
+    //         <View style={styles.radioContainer}>
+    //           <View style={styles.radioButton}>
+    //             <RadioButton
+    //               value="male"
+    //               status={genderPreference === "male" ? "checked" : "unchecked"}
+    //               onPress={() => setGenderPreference("male")}
+    //             />
+    //             <Text>Male</Text>
+    //           </View>
+    //           <View style={styles.radioButton}>
+    //             <RadioButton
+    //               value="female"
+    //               status={genderPreference === "female" ? "checked" : "unchecked"}
+    //               onPress={() => setGenderPreference("female")}
+    //             />
+    //             <Text>Female</Text>
+    //           </View>
+    //           <View style={styles.radioButton}>
+    //             <RadioButton
+    //               value="none"
+    //               status={genderPreference === "none" ? "checked" : "unchecked"}
+    //               onPress={() => setGenderPreference("none")}
+    //             />
+    //             <Text>None</Text>
+    //           </View>
+    //         </View>
+    //       </View> */}
 
-          <View style={styles.inputContainer}>
-              <GooglePlacesAutocomplete
+    //       <View style={styles.inputContainer}>
+    //           <GooglePlacesAutocomplete
+    //             placeholder='Search'
+    //             // debounce={400}
+    //             styles={styles.maps}
+    //             query={{
+    //               key: "AIzaSyDvmZSDRDbZwU25jkgQL_O6-iLdoF4uVUM",
+    //               language: 'en',
+                  
+    //             }}
+    //             fetchDetails={true}
+    //             onPress={(data, details = null) => console.log(data, details)}
+    //             onFail={error => console.log(error)}
+    //             onNotFound={() => console.log('no results')}
+    //             // onPress={(data, details = null) => {
+    //             //   // 'details' is provided when fetchDetails = true
+    //             //   console.log(data, details);
+    //             // }}
+    //             // onPress={item => { console.log(item); }}
+    //           />
+    //         </View>
+
+
+    //       <View style={styles.buttonContainer}>
+    //         <Button mode="contained" onPress={handleCreateJob}>
+    //           Create Job
+    //         </Button>
+    //       </View>
+    //     </ImageBackground>
+    // </TouchableWithoutFeedback>
+    
+    
+      <GooglePlacesAutocomplete
                 placeholder='Search'
                 // debounce={400}
                 styles={styles.maps}
@@ -119,25 +150,11 @@ const CreateJobsScreen = () => {
                   
                 }}
                 fetchDetails={true}
-        onPress={(data, details = null) => console.log(data, details)}
-        onFail={error => console.log(error)}
-        onNotFound={() => console.log('no results')}
-                // onPress={(data, details = null) => {
-                //   // 'details' is provided when fetchDetails = true
-                //   console.log(data, details);
-                // }}
-                // onPress={item => { console.log(item); }}
+                onPress={(data, details = null) => console.log(data, details)}
+                onFail={error => console.log(error)}
+                onNotFound={() => console.log('no results')}
               />
-            </View>
-
-
-          <View style={styles.buttonContainer}>
-            <Button mode="contained" onPress={handleCreateJob}>
-              Create Job
-            </Button>
-          </View>
-        </ImageBackground>
-    </TouchableWithoutFeedback>
+    
   );
 };
 
