@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native';
+import { useTheme } from "react-native-paper";
 import { auth, db } from '../../config/firebaseConfig';
 import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +9,10 @@ const LocalImage = require("../../assets/texture.jpg");
 
 const PatientMessagesScreen = () => {
   const [conversations, setConversations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+
+  const { colors } = useTheme();
 
   const fetchConversations = async () => {
     try {
@@ -37,36 +41,39 @@ const PatientMessagesScreen = () => {
       }
   
       setConversations(conversationsData);
-    
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching conversations:', error);
+      setLoading(false);
     }
   };
   
-
-
   useEffect(() => {
     fetchConversations();
   }, []);
 
   return (
     <View style={styles.container}>
-     <ImageBackground source={LocalImage} resizeMode="cover" style={styles.image}>
-      <FlatList
-        data={conversations}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-            <TouchableOpacity
-            style={styles.card}
-            onPress={() => {
-              navigation.navigate('ChatScreen', { groupId: item.id, specialistName: item.specialistName });
-            }}
-          >
-            <Text>{item.specialistName}</Text>
-          </TouchableOpacity>
+      <ImageBackground source={LocalImage} resizeMode="cover" style={styles.image}>
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.primary} />
+        ) : (
+          <FlatList
+            data={conversations}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.card}
+                onPress={() => {
+                  navigation.navigate('ChatScreen', { groupId: item.id, specialistName: item.specialistName });
+                }}
+              >
+                <Text>{item.specialistName}</Text>
+              </TouchableOpacity>
+            )}
+          />
         )}
-      />
-     </ImageBackground> 
+      </ImageBackground>
     </View>
   );
 };
