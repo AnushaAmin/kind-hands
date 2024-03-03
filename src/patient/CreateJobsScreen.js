@@ -10,7 +10,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { ScrollView } from "react-native-gesture-handler";
 
 const CreateJobsScreen = () => {
-  console.log(process.env.API_KEY);
   const [serviceRequired, setServiceRequired] = useState(Categories[0]);
   const [description, setDescription] = useState("");
   const [genderPreference, setGenderPreference] = useState("male");
@@ -115,7 +114,7 @@ const CreateJobsScreen = () => {
                 // debounce={400}
                 styles={styles.maps}
                 query={{
-                  key: "AIzaSyCcpEbDnKGjnC0URYZVBGr8GVmReNM27q8",
+                  key: process.env.API_KEY,
                   language: 'en',
                   
                 }}
