@@ -1,12 +1,22 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ImageBackground } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ImageBackground,
+  ScrollView,
+  Modal,
+} from "react-native";
 import { Button, TextInput, RadioButton } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "../../config/firebaseConfig";
 import { Categories } from "../../config/Constants";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const CreateJobsScreen = () => {
   const [serviceRequired, setServiceRequired] = useState(Categories[0]);
@@ -16,6 +26,7 @@ const CreateJobsScreen = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const requirementCheck = () => {
     if (description === "" || address === "") {
@@ -29,7 +40,8 @@ const CreateJobsScreen = () => {
     const { lat, lng } = details.geometry.location;
     setLatitude(lat);
     setLongitude(lng);
-    setAddress(data.description); 
+    setAddress(data.description);
+    setModalVisible(false);
     console.log("Latitude:", lat, "Longitude:", lng);
   };
 
@@ -42,7 +54,7 @@ const CreateJobsScreen = () => {
           serviceRequired: serviceRequired,
           description,
           genderPreference,
-          address
+          address,
         });
 
         setServiceRequired("");
@@ -56,94 +68,145 @@ const CreateJobsScreen = () => {
       }
     }
   };
- const API = process.env.API_KEY;
+  const API = process.env.API_KEY;
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <ImageBackground source={require("../../assets/texture.jpg")} style={styles.backgroundImage}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Service Required<Text style={styles.star}>*</Text></Text>
-            <View style={[styles.input, styles.pickerContainer]}>
-              <Picker
-                selectedValue={serviceRequired}
-                onValueChange={(itemValue) => setServiceRequired(itemValue)}
-              >
-                {Categories.map((category) => (
-                  <Picker.Item key={category} label={category} value={category} />
-                ))}
-              </Picker>
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Description<Text style={styles.star}>*</Text></Text>
-            <TextInput
-              style={{ borderColor: "black" }}
-              placeholder="Enter Description"
-              value={description}
-              onChangeText={setDescription}
-              maxLength={300}
-              mode="outlined"
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Gender Preference<Text style={styles.star}>*</Text></Text>
-            <View style={styles.radioContainer}>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="male"
-                  status={genderPreference === "male" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("male")}
-                />
-                <Text>Male</Text>
-              </View>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="female"
-                  status={genderPreference === "female" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("female")}
-                />
-                <Text>Female</Text>
-              </View>
-              <View style={styles.radioButton}>
-                <RadioButton
-                  value="none"
-                  status={genderPreference === "none" ? "checked" : "unchecked"}
-                  onPress={() => setGenderPreference("none")}
-                />
-                <Text>None</Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Location<Text style={styles.star}>*</Text></Text>
+      <View style={{ flex: 1 }}>
+        <Modal
+          animationType="slide"
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={{ padding: 30, backgroundColor: "#eee", flex: 1 }}>
+            <Text style={styles.label}>
+              Location<Text style={styles.star}>*</Text>
+            </Text>
             <GooglePlacesAutocomplete
-              placeholder='Enter Location'
-              styles={styles.maps}
+              minLength={2}
+              placeholder="Enter Location"
+              styles={{
+                container: {
+                  flex: 0,
+                  borderColor: "#000",
+                  borderStyle: "solid",
+                },
+                description: {
+                  color: "#000",
+                  fontSize: 16,
+                },
+                predefinedPlacesDescription: {
+                  color: "#3caf50",
+                },
+              }}
               query={{
                 key: API,
-                language: 'en',
+                language: "en",
               }}
               fetchDetails={true}
               onPress={handlePlaceSelect}
-              onFail={error => console.log(error)}
-              onNotFound={() => console.log('no results')}
+              onFail={(error) => console.log(error)}
+              onNotFound={() => console.log("no results")}
             />
+            <Button onPress={() => setModalVisible(false)}>Close</Button>
           </View>
+        </Modal>
+        <ScrollView style={styles.container}>
+          <ImageBackground
+            source={require("../../assets/texture.jpg")}
+            style={styles.backgroundImage}
+          >
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>
+                Service Required<Text style={styles.star}>*</Text>
+              </Text>
+              <View style={[styles.input, styles.pickerContainer]}>
+                <Picker
+                  selectedValue={serviceRequired}
+                  onValueChange={(itemValue) => setServiceRequired(itemValue)}
+                >
+                  {Categories.map((category) => (
+                    <Picker.Item
+                      key={category}
+                      label={category}
+                      value={category}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </View>
 
-          {/* <View style={styles.inputContainer}>
-            <Text style={styles.label}>Selected Location:</Text>
-            <Text>{address}</Text>
-          </View> */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>
+                Description<Text style={styles.star}>*</Text>
+              </Text>
+              <TextInput
+                style={{ borderColor: "black" }}
+                placeholder="Enter Description"
+                value={description}
+                onChangeText={setDescription}
+                maxLength={300}
+                mode="outlined"
+              />
+            </View>
 
-          <View style={styles.buttonContainer}>
-            <Button mode="contained" onPress={handleCreateJob}>
-              Create Job
-            </Button>
-          </View>
-        </ImageBackground>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>
+                Gender Preference<Text style={styles.star}>*</Text>
+              </Text>
+              <View style={styles.radioContainer}>
+                <View style={styles.radioButton}>
+                  <RadioButton
+                    value="male"
+                    status={
+                      genderPreference === "male" ? "checked" : "unchecked"
+                    }
+                    onPress={() => setGenderPreference("male")}
+                  />
+                  <Text>Male</Text>
+                </View>
+                <View style={styles.radioButton}>
+                  <RadioButton
+                    value="female"
+                    status={
+                      genderPreference === "female" ? "checked" : "unchecked"
+                    }
+                    onPress={() => setGenderPreference("female")}
+                  />
+                  <Text>Female</Text>
+                </View>
+                <View style={styles.radioButton}>
+                  <RadioButton
+                    value="none"
+                    status={
+                      genderPreference === "none" ? "checked" : "unchecked"
+                    }
+                    onPress={() => setGenderPreference("none")}
+                  />
+                  <Text>None</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>
+                Location<Text style={styles.star}>*</Text>
+              </Text>
+              <TextInput
+                value={address}
+                onFocus={() => setModalVisible(true)}
+                placeholder="Enter Location"
+              />
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <Button mode="contained" onPress={handleCreateJob}>
+                Create Job
+              </Button>
+            </View>
+            <View style={{ height: 150 }}></View>
+          </ImageBackground>
+        </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -157,7 +220,6 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "center",
   },
   input: {
     borderWidth: 1,
@@ -169,12 +231,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginTop: 10,
+    zIndex: 10,
   },
   star: {
     color: "red",
   },
   buttonContainer: {
     marginTop: 20,
+    zIndex: 1,
   },
   radioContainer: {
     flexDirection: "row",
@@ -193,8 +257,7 @@ const styles = StyleSheet.create({
   maps: {
     marginBottom: 20,
     flex: 1,
-  }
+  },
 });
 
 export default CreateJobsScreen;
-
