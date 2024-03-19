@@ -9,6 +9,7 @@ import ChatScreen from "../screens/ChatScreen";
 import CreateJobsScreen from "../patient/CreateJobsScreen";
 import EditJobScreen from "../patient/EditJobScreen";
 import JobOfferScreen from "../patient/JobOfferScreen";
+import LocationSearchScreen from "../patient/LocationSearchScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +62,11 @@ const PatientStack = () => {
           name="JobOfferScreen"
           component={JobOfferScreen}
           options={{ title: "Offers", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
+        />
+        <Stack.Screen
+          name="LocationSearchScreen"
+          component={LocationSearchScreen}
+          options={{ title: "Location", headerStyle: { backgroundColor: 'rgb(0, 95, 175)' }, headerTintColor: 'white' }}
         />
        
         
